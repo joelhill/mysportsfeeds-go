@@ -1,0 +1,61 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "bUHknecjFliPHamDIoTP953I0TQ=",
+			"path": "github.com/InVisionApp/go-logger",
+			"revision": "578aa5e3a28ab647e87f86ce90fb58ac5690e60d",
+			"revisionTime": "2018-04-24T14:44:58Z"
+		},
+		{
+			"checksumSHA1": "l1GXvmpfXZGyyf5AtZmcIUjbO3A=",
+			"path": "github.com/joelhill/go-rest-http-blaster",
+			"revision": "09b4b21610a4f85082b2b1f0acc4fe93318c1609",
+			"revisionTime": "2018-07-13T18:58:16Z",
+			"version": "v5.1.0",
+			"versionExact": "v5.1.0"
+		},
+		{
+			"checksumSHA1": "wIcN7tZiF441h08RHAm4NV8cYO4=",
+			"path": "github.com/opentracing/opentracing-go",
+			"revision": "bd9c3193394760d98b2fa6ebb2291f0cd1d06a7d",
+			"revisionTime": "2018-06-06T20:41:48Z"
+		},
+		{
+			"checksumSHA1": "tnkdNJbJxNKuPZMWapP1xhKIIGw=",
+			"path": "github.com/opentracing/opentracing-go/log",
+			"revision": "bd9c3193394760d98b2fa6ebb2291f0cd1d06a7d",
+			"revisionTime": "2018-06-06T20:41:48Z"
+		},
+		{
+			"checksumSHA1": "IU0RLDrXScjlsTwNWAKQLLsLoc0=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "92052687f8ec598ff0da626d2909478cfd1e3a3c",
+			"revisionTime": "2018-07-12T20:16:18Z",
+			"version": "master",
+			"versionExact": "master"
+		},
+		{
+			"checksumSHA1": "BGm8lKZmvJbf/YOJLeL1rw2WVjA=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "a49355c7e3f8fe157a85be2f77e6e269a0f89602",
+			"revisionTime": "2018-06-20T09:14:27Z",
+			"version": "master",
+			"versionExact": "master"
+		},
+		{
+			"checksumSHA1": "hJhWnWlJPH69GG7pNZjqm8Lt664=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "1b2967e3c290b7c545b3db0deeda16e9be4f98a2",
+			"revisionTime": "2018-07-06T09:56:39Z"
+		},
+		{
+			"checksumSHA1": "P8Y8GFwxybTfltfh8Q0lHqlEYIM=",
+			"path": "golang.org/x/sys/windows",
+			"revision": "1b2967e3c290b7c545b3db0deeda16e9be4f98a2",
+			"revisionTime": "2018-07-06T09:56:39Z"
+		}
+	],
+	"rootPath": "github.com/joelhill/go-mysportsfeeds"
+}
