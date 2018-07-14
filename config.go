@@ -6,7 +6,7 @@ type Config struct {
 	Authorization string
 }
 
-// newConfig -
-func newConfig() *Config {
+// NewConfig -
+func NewConfig() *Config {
 	return &Config{}
 }

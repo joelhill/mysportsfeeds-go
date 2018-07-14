@@ -20,8 +20,8 @@ type Service struct {
 	Logger *logrus.Entry
 }
 
-// newService -
-func newService(config *Config) *Service {
+// NewService -
+func NewService(config *Config) *Service {
 
 	// JSON formatter for log output if not running in a TTY
 	// because Loggly likes JSON but humans like colors
