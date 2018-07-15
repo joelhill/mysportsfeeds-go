@@ -25,13 +25,13 @@ type Schedule struct {
 }
 
 type AwayTeam struct {
-	ID           int `json:"id"`
-	Abbreviation int `json:"abbreviation"`
+	ID           int    `json:"id"`
+	Abbreviation string `json:"abbreviation"`
 }
 
 type HomeTeam struct {
-	ID           int `json:"id"`
-	Abbreviation int `json:"abbreviation"`
+	ID           int    `json:"id"`
+	Abbreviation string `json:"abbreviation"`
 }
 
 type Venue struct {
