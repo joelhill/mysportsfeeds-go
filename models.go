@@ -1,12 +1,8 @@
 package msf
 
 type GamesIO struct {
-	Games Games `json:"games"`
-}
-
-type Games struct {
 	LastUpdatedOn string      `json:"lastUpdatedOn"`
-	Game          []Game      `json:"game"`
+	Games         []Game      `json:"games"`
 	References    *References `json:"references"`
 }
 
