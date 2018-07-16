@@ -7,6 +7,8 @@ type Config struct {
 }
 
 // NewConfig -
-func NewConfig() *Config {
-	return &Config{}
+func NewConfig(authorization string) *Config {
+	return &Config{
+		Authorization: authorization,
+	}
 }
