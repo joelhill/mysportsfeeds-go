@@ -9,56 +9,69 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-// DailyGamesOptions - Are the options to hit the daily games endpoint
-type DailyGamesOptions struct {
+// SeasonalDfsOptions - Are the options to hit the seasonal DFS endpoint
+type SeasonalDfsOptions struct {
 	// URL Parts
 	URL     string
 	Version string
 	Sport   string
 	Season  string
-	Date    string //YYYYMMDD
 	Format  string
 
 	// Optional URL Params
-	Team   string
-	Status string
-	Sort   string
-	Offset string
-	Limit  string
-	Force  string
+	Team     string
+	Player   string
+	Position string
+	Country  string
+	DfsType  string
+	Sort     string
+	Offset   string
+	Limit    string
+	Force    string
 }
 
-// DefaultDailyGamesOptions - Returns the default options to hit the daily games endpoint
-func DefaultDailyGamesOptions() *DailyGamesOptions {
-	return &DailyGamesOptions{
+// DefaultSeasonalDfsOptions - Returns the default options to hit the seasonal DFS endpoint
+func DefaultSeasonalDfsOptions() *SeasonalDfsOptions {
+	return &SeasonalDfsOptions{
 		URL:     URL,
 		Version: VersionV2_0,
 		Sport:   SportMLB,
 		Format:  FormatJSON,
 		Season:  SeasonCurrent,
-		Date:    DateToday,
 	}
 }
 
-// DailyGames - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/{season}/date/{date}/games.{format} endoint
-func (s *Service) DailyGames(c context.Context, options *DailyGamesOptions) (GamesIO, error) {
+// SeasonalDfs - hits the https://api.mysportsfeeds.com/v2.0/pull/{sport}/{season}/dfs.{format} endpoint
+func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error) {
 	errorPayload := make(map[string]interface{})
-	mapping := GamesIO{}
+	mapping := DfsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
-	err := validateDailyGamesURI(options)
+	err := validateSeasonalDfsURI(options)
 	if err != nil {
 		return mapping, err
 	}
 
-	uri := fmt.Sprintf("%s/%s/pull/%s/%s/date/%s/games.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Date, options.Format)
+	uri := fmt.Sprintf("%s/%s/pull/%s/%s/dfs.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Format)
 
 	if len(options.Team) > 0 {
 		uri = fmt.Sprintf("%s&team=%s", uri, options.Team)
 	}
 
-	if len(options.Status) > 0 {
-		uri = fmt.Sprintf("%s&status=%s", uri, options.Status)
+	if len(options.Player) > 0 {
+		uri = fmt.Sprintf("%s&player=%s", uri, options.Player)
+	}
+
+	if len(options.Position) > 0 {
+		uri = fmt.Sprintf("%s&position=%s", uri, options.Position)
+	}
+
+	if len(options.Country) > 0 {
+		uri = fmt.Sprintf("%s&country=%s", uri, options.Country)
+	}
+
+	if len(options.DfsType) > 0 {
+		uri = fmt.Sprintf("%s&dfstype=%s", uri, options.DfsType)
 	}
 
 	if len(options.Sort) > 0 {
@@ -80,7 +93,7 @@ func (s *Service) DailyGames(c context.Context, options *DailyGamesOptions) (Gam
 	s.Logger = s.Logger.WithFields(logrus.Fields{
 		"URI": uri,
 	})
-	s.Logger.Debug("DailyGames API Call")
+	s.Logger.Debug("Seasonal DFS API Call")
 
 	// make you a client
 	client, err := blaster.NewClient(uri)
@@ -96,16 +109,16 @@ func (s *Service) DailyGames(c context.Context, options *DailyGamesOptions) (Gam
 	ctx := context.Background()
 	statusCode, err := client.Get(ctx)
 	if err != nil {
-		s.Logger.Errorf("something went wrong making the get request for DailyGames: %s", err.Error())
+		s.Logger.Errorf("something went wrong making the get request for SeasonalDfs: %s", err.Error())
 		return mapping, err
 	}
 
-	s.Logger.Infof("DailyGames Status Code: %d", statusCode)
+	s.Logger.Infof("SeasonalDfs Status Code: %d", statusCode)
 
 	return mapping, nil
 }
 
-func validateDailyGamesURI(options *DailyGamesOptions) error {
+func validateSeasonalDfsURI(options *SeasonalDfsOptions) error {
 	if len(options.URL) == 0 {
 		return errors.New("missing required option to build the url: URL")
 	}
@@ -117,9 +130,6 @@ func validateDailyGamesURI(options *DailyGamesOptions) error {
 	}
 	if len(options.Season) == 0 {
 		return errors.New("missing required option to build the url: Season")
-	}
-	if len(options.Date) == 0 {
-		return errors.New("missing required option to build the url: Date")
 	}
 	if len(options.Format) == 0 {
 		return errors.New("missing required option to build the url: Format")

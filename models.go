@@ -1,11 +1,18 @@
 package msf
 
+// Main Models
 type GamesIO struct {
 	LastUpdatedOn string      `json:"lastUpdatedOn"`
 	Games         []Game      `json:"games"`
 	References    *References `json:"references"`
 }
 
+type DfsIO struct {
+	LastUpdatedOn string      `json:"lastUpdatedOn"`
+	References    *References `json:"references"`
+}
+
+// Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
 	Score    *Score    `json:"score"`

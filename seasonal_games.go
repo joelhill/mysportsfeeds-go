@@ -2,6 +2,7 @@ package msf
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	blaster "github.com/joelhill/go-rest-http-blaster"
@@ -44,6 +45,12 @@ func DefaultSeasonalGamesOptions() *SeasonalGamesOptions {
 func (s *Service) SeasonalGames(c context.Context, options *SeasonalGamesOptions) (GamesIO, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GamesIO{}
+
+	// make sure we have all the required elements to build the full required url string.
+	err := validateSeasonalGamesURI(options)
+	if err != nil {
+		return mapping, err
+	}
 
 	uri := fmt.Sprintf("%s/%s/pull/%s/%s/games.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Format)
 
@@ -101,4 +108,23 @@ func (s *Service) SeasonalGames(c context.Context, options *SeasonalGamesOptions
 	s.Logger.Infof("SeasonalGames Status Code: %d", statusCode)
 
 	return mapping, nil
+}
+
+func validateSeasonalGamesURI(options *SeasonalGamesOptions) error {
+	if len(options.URL) == 0 {
+		return errors.New("missing required option to build the url: URL")
+	}
+	if len(options.Version) == 0 {
+		return errors.New("missing required option to build the url: Version")
+	}
+	if len(options.Sport) == 0 {
+		return errors.New("missing required option to build the url: Sport")
+	}
+	if len(options.Season) == 0 {
+		return errors.New("missing required option to build the url: Season")
+	}
+	if len(options.Format) == 0 {
+		return errors.New("missing required option to build the url: Format")
+	}
+	return nil
 }
