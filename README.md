@@ -11,8 +11,8 @@ import (
 )
 
 ctx := context.Context
-config := msf.NewConfig()
-config.Authorization = "Basic asfafasdfasdfasdfasasdfsadfasdfsd"
+authorization := "Basic asfafasdfasdfasdfasasdfsadfasdfsd"
+config := msf.NewConfig(authorization)
 client := msf.NewService(config)
 options := msf.DefaultSeasonalGamesOptions()
 games := client.SeasonalGames(ctx, options)
