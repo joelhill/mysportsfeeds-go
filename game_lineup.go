@@ -37,9 +37,9 @@ func (s *Service) NewGameLineupOptions() *GameLineupOptions {
 }
 
 // GameLineup - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/lineup.{format} endoint
-func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, error) {
+func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (GameLineupIO, error) {
 	errorPayload := make(map[string]interface{})
-	mapping := BoxscoreIO{}
+	mapping := GameLineupIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateGameLineupURI(options)

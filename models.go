@@ -18,6 +18,20 @@ type GameLogIO struct {
 	References    *References `json:"references"`
 }
 
+type GameLineupIO struct {
+	LastUpdatedOn string        `json:"lastUpdatedOn"`
+	Game          *Schedule     `json:"game"`
+	TeamLineups   *[]TeamLineup `json:"teamLineups"`
+	References    *References   `json:"references"`
+}
+
+type GamePlayByPlayIO struct {
+	LastUpdatedOn string      `json:"lastUpdatedOn"`
+	Game          *Schedule   `json:"game"`
+	AtBats        *[]AtBat    `json:"atBats"`
+	References    *References `json:"references"`
+}
+
 type BoxscoreIO struct {
 	LastUpdatedOn string         `json:"lastUpdatedOn"`
 	Game          *Schedule      `json:"game"`
@@ -354,4 +368,47 @@ type Standings struct {
 
 type Miscellaneous struct {
 	GamesStarted *int `json:"gamesStarted"`
+}
+
+type TeamLineup struct {
+	Team     *Team     `json:"team"`
+	Expected *Expected `json:"expected"`
+	Actual   *Actual   `json:"actual"`
+}
+
+type Expected struct {
+	LineupPositions *[]LineupPosition `json:"lineupPositions"`
+}
+
+type Actual struct {
+	LineupPositions *[]LineupPosition `json:"lineupPositions"`
+}
+
+type LineupPosition struct {
+	Position *string `json:"position"`
+	Player   *Player `json:"player"`
+}
+
+type AtBat struct {
+	Inning      *int         `json:"inning"`
+	InningHalf  *string      `json:"inningHalf"`
+	BattingTeam *Team        `json:"battingTeam"`
+	AtBatPlay   *[]AtBatPlay `json:"atBatPlay"`
+}
+
+type AtBatPlay struct {
+	BatterUp *BatterUp `json:"batterUp"`
+	// TODO: fill these out
+	// Pitch          *Pitch          `json:"pitch"`
+	// PickoffAttempt *PickoffAttempt `json:"pickoffAttempt"`
+	// Hit            *Hit            `json:"hit"`
+	// BaseRunAttempt *BaseRunAttempt `json:"baseRunAttempt"`
+	// BallThrow      *BallThrow      `json:"ballThrow"`
+	Description *string `json:"description"`
+}
+
+type BatterUp struct {
+	BattingPlayer       *Player `json:"battingPlayer"`
+	StandingLeftOrRight *string `json:"standingLeftOrRight"`
+	Result              *string `json:"result"`
 }

@@ -29,6 +29,9 @@ type IService interface {
 	NewGameLineupOptions() *GameLineupOptions
 	GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, error)
 
+	NewGamePlayByPlayOptions() *GamePlayByPlayOptions
+	GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, error)
+
 	NewSeasonalDfsOptions() *SeasonalDfsOptions
 	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error)
 
