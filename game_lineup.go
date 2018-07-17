@@ -9,8 +9,8 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-// GameBoxscoreOptions - Are the options to hit the game boxscore endpoint
-type GameBoxscoreOptions struct {
+// GameLineupOptions - Are the options to hit the game lineup endpoint
+type GameLineupOptions struct {
 	// URL Parts
 	URL     string
 	Version string
@@ -20,17 +20,14 @@ type GameBoxscoreOptions struct {
 	Format  string
 
 	// Optional URL Params
-	TeamStats   string
-	PlayerStats string
-	Sort        string
-	Offset      string
-	Limit       string
-	Force       string
+	Position   string
+	LineupType string
+	Force      string
 }
 
-// NewGameBoxscoreOptions - Returns the options with most url parts already set to hit the daily games endpoint
-func (s *Service) NewGameBoxscoreOptions() *GameBoxscoreOptions {
-	return &GameBoxscoreOptions{
+// NewGameLineupOptions - Returns the options with most url parts already set to hit the game lineup endpoint
+func (s *Service) NewGameLineupOptions() *GameLineupOptions {
+	return &GameLineupOptions{
 		URL:     s.Config.BaseURL,
 		Version: s.Config.Version,
 		Sport:   s.Config.Sport,
@@ -39,37 +36,25 @@ func (s *Service) NewGameBoxscoreOptions() *GameBoxscoreOptions {
 	}
 }
 
-// GameBoxscore - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/boxscore.{format} endoint
-func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, error) {
+// GameLineup - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/lineup.{format} endoint
+func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := BoxscoreIO{}
 
 	// make sure we have all the required elements to build the full required url string.
-	err := validateGameBoxscoreURI(options)
+	err := validateGameLineupURI(options)
 	if err != nil {
 		return mapping, err
 	}
 
-	uri := fmt.Sprintf("%s/%s/pull/%s/%s/games/%s/boxscore.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Game, options.Format)
+	uri := fmt.Sprintf("%s/%s/pull/%s/%s/games/%s/lineup.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Game, options.Format)
 
-	if len(options.TeamStats) > 0 {
-		uri = fmt.Sprintf("%s&teamstats=%s", uri, options.TeamStats)
+	if len(options.Position) > 0 {
+		uri = fmt.Sprintf("%s&position=%s", uri, options.Position)
 	}
 
-	if len(options.PlayerStats) > 0 {
-		uri = fmt.Sprintf("%s&playerstats=%s", uri, options.PlayerStats)
-	}
-
-	if len(options.Sort) > 0 {
-		uri = fmt.Sprintf("%s&sort=%s", uri, options.Sort)
-	}
-
-	if len(options.Offset) > 0 {
-		uri = fmt.Sprintf("%s&offset=%s", uri, options.Offset)
-	}
-
-	if len(options.Limit) > 0 {
-		uri = fmt.Sprintf("%s&limit=%s", uri, options.Limit)
+	if len(options.LineupType) > 0 {
+		uri = fmt.Sprintf("%s&lineuptype=%s", uri, options.LineupType)
 	}
 
 	if len(options.Force) > 0 {
@@ -79,7 +64,7 @@ func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) 
 	s.Logger = s.Logger.WithFields(logrus.Fields{
 		"URI": uri,
 	})
-	s.Logger.Debug("GameBoxscore API Call")
+	s.Logger.Debug("GameLineup API Call")
 
 	// make you a client
 	client, err := blaster.NewClient(uri)
@@ -95,16 +80,16 @@ func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) 
 	ctx := context.Background()
 	statusCode, err := client.Get(ctx)
 	if err != nil {
-		s.Logger.Errorf("something went wrong making the get request for GameBoxscore: %s", err.Error())
+		s.Logger.Errorf("something went wrong making the get request for GameLineup: %s", err.Error())
 		return mapping, err
 	}
 
-	s.Logger.Infof("GameBoxscore Status Code: %d", statusCode)
+	s.Logger.Infof("GameLineup Status Code: %d", statusCode)
 
 	return mapping, nil
 }
 
-func validateGameBoxscoreURI(options *GameBoxscoreOptions) error {
+func validateGameLineupURI(options *GameLineupOptions) error {
 	if len(options.URL) == 0 {
 		return errors.New("missing required option to build the url: URL")
 	}

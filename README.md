@@ -14,6 +14,6 @@ ctx := context.Context
 authorization := "Basic asfafasdfasdfasdfasasdfsadfasdfsd"
 config := msf.NewConfig(authorization)
 client := msf.NewService(config)
-options := msf.DefaultSeasonalGamesOptions()
+options := client.NewSeasonalGamesOptions()
 games := client.SeasonalGames(ctx, options)
 ```

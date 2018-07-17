@@ -28,19 +28,18 @@ type DailyGamesOptions struct {
 	Force  string
 }
 
-// DefaultDailyGamesOptions - Returns the default options to hit the daily games endpoint
-func DefaultDailyGamesOptions() *DailyGamesOptions {
+// NewDailyGamesOptions - Returns the options with most url parts already set to hit the daily games endpoint
+func (s *Service) NewDailyGamesOptions() *DailyGamesOptions {
 	return &DailyGamesOptions{
-		URL:     URL,
-		Version: VersionV2_0,
-		Sport:   SportMLB,
-		Format:  FormatJSON,
-		Season:  SeasonCurrent,
-		Date:    DateToday,
+		URL:     s.Config.BaseURL,
+		Version: s.Config.Version,
+		Sport:   s.Config.Sport,
+		Format:  s.Config.Format,
+		Season:  s.Config.Season,
 	}
 }
 
-// DailyGames - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/{season}/date/{date}/games.{format} endoint
+// DailyGames - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/date/{date}/games.{format} endoint
 func (s *Service) DailyGames(c context.Context, options *DailyGamesOptions) (GamesIO, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GamesIO{}

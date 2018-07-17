@@ -11,7 +11,35 @@ import (
 
 // IService - all functions that implement the My Sports Feed Service Interface.
 type IService interface {
+	NewDailyDfsOptions() *DailyDfsOptions
+	DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, error)
+
+	NewDailyGamesOptions() *DailyGamesOptions
+	DailyGames(c context.Context, options *DailyGamesOptions) (GamesIO, error)
+
+	NewDailyPlayerGamelogsOptions() *DailyPlayerGamelogsOptions
+	DailyPlayerGamelogs(c context.Context, options *DailyPlayerGamelogsOptions) (GameLogIO, error)
+
+	NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions
+	DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, error)
+
+	NewGameBoxscoreOptions() *GameBoxscoreOptions
+	GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, error)
+
+	NewGameLineupOptions() *GameLineupOptions
+	GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, error)
+
+	NewSeasonalDfsOptions() *SeasonalDfsOptions
+	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error)
+
+	NewSeasonalGamesOptions() *SeasonalGamesOptions
 	SeasonalGames(c context.Context, options *SeasonalGamesOptions) (GamesIO, error)
+
+	NewSeasonalPlayerGamelogsOptions() *SeasonalPlayerGamelogsOptions
+	SeasonalPlayerGamelogs(c context.Context, options *SeasonalPlayerGamelogsOptions) (GameLogIO, error)
+
+	NewSeasonalTeamGamelogsOptions() *SeasonalTeamGamelogsOptions
+	SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamGamelogsOptions) (GameLogIO, error)
 }
 
 // Service - dependencies for the my sports feed service

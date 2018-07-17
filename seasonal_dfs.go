@@ -30,14 +30,14 @@ type SeasonalDfsOptions struct {
 	Force    string
 }
 
-// DefaultSeasonalDfsOptions - Returns the default options to hit the seasonal DFS endpoint
-func DefaultSeasonalDfsOptions() *SeasonalDfsOptions {
+// NewSeasonalDfsOptions - Returns the options with most url parts already set to hit the seasonal DFS endpoint
+func (s *Service) NewSeasonalDfsOptions() *SeasonalDfsOptions {
 	return &SeasonalDfsOptions{
-		URL:     URL,
-		Version: VersionV2_0,
-		Sport:   SportMLB,
-		Format:  FormatJSON,
-		Season:  SeasonCurrent,
+		URL:     s.Config.BaseURL,
+		Version: s.Config.Version,
+		Sport:   s.Config.Sport,
+		Format:  s.Config.Format,
+		Season:  s.Config.Season,
 	}
 }
 

@@ -28,16 +28,14 @@ type SeasonalGamesOptions struct {
 	Force  string
 }
 
-// DefaultSeasonalGamesOptions - Returns the default options to hit the seasonal games endpoint
-func DefaultSeasonalGamesOptions() *SeasonalGamesOptions {
+// NewSeasonalGamesOptions - Returns the options with most url parts already set to hit the seasonal games endpoint
+func (s *Service) NewSeasonalGamesOptions() *SeasonalGamesOptions {
 	return &SeasonalGamesOptions{
-		URL:     URL,
-		Version: VersionV2_0,
-		Sport:   SportMLB,
-		Format:  FormatJSON,
-		Season:  SeasonCurrent,
-		Status:  StatusUnplayed,
-		Date:    DateToday,
+		URL:     s.Config.BaseURL,
+		Version: s.Config.Version,
+		Sport:   s.Config.Sport,
+		Format:  s.Config.Format,
+		Season:  s.Config.Season,
 	}
 }
 

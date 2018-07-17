@@ -18,6 +18,14 @@ type GameLogIO struct {
 	References    *References `json:"references"`
 }
 
+type BoxscoreIO struct {
+	LastUpdatedOn string         `json:"lastUpdatedOn"`
+	Game          *Schedule      `json:"game"`
+	Scoring       *Score         `json:"scoring"`
+	Stats         *StatsHomeAway `json:"references"`
+	References    *References    `json:"references"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -67,17 +75,28 @@ type Score struct {
 }
 
 type Inning struct {
-	InningNumber *int `json:"inningNumber"`
-	AwayScore    *int `json:"awayScore"`
-	HomeScore    *int `json:"homeScore"`
+	InningNumber *int           `json:"inningNumber"`
+	AwayScore    *int           `json:"awayScore"`
+	HomeScore    *int           `json:"homeScore"`
+	ScoringPlays *[]ScoringPlay `json:"scoringPlays"`
+}
+
+type ScoringPlay struct {
+	InningHalf      *string `json:"inningHalf"`
+	Team            *Team   `json:"team"`
+	ScoreChange     *int    `json:"scoreChange"`
+	AwayScore       *int    `json:"awayScore"`
+	HomeScore       *int    `json:"homeScore"`
+	PlayDescription *string `json:"playDescription"`
 }
 
 type References struct {
-	TeamReferences       []TeamReference        `json:"teamReferences"`
-	VenueReferences      []VenueReference       `json:"venueReferences"`
-	GameReferences       *[]GameReference       `json:"gameReferences"`
-	PlayerReferences     *[]PlayerReference     `json:"playerReferences"`
-	PlayerStatReferences *[]PlayerStatReference `json:"playerStatReferences"`
+	TeamReferences       *[]TeamReference   `json:"teamReferences"`
+	TeamStatReferences   *[]StatReference   `json:"teamStatReferences"`
+	VenueReferences      *[]VenueReference  `json:"venueReferences"`
+	GameReferences       *[]GameReference   `json:"gameReferences"`
+	PlayerReferences     *[]PlayerReference `json:"playerReferences"`
+	PlayerStatReferences *[]StatReference   `json:"playerStatReferences"`
 }
 
 type TeamReference struct {
@@ -130,7 +149,7 @@ type PlayerReference struct {
 	Handedness          *Handedness `json:"handedness"`
 }
 
-type PlayerStatReference struct {
+type StatReference struct {
 	Category     string `json:"category"`
 	FullName     string `json:"fullName"`
 	Description  string `json:"description"`
@@ -170,10 +189,26 @@ type Team struct {
 	Abbreviation string `json:"abbreviation"`
 }
 
+type StatsHomeAway struct {
+	Away *BoxscoreStats `json:"away"`
+	Home *BoxscoreStats `json:"home"`
+}
+
+type BoxscoreStats struct {
+	TeamStats *[]Stats   `json:"teamStats"`
+	Players   *[]Players `json:"players"`
+}
+
+type Players struct {
+	Player      *Player  `json:"player"`
+	PlayerStats *[]Stats `json:"playerStats"`
+}
+
 type Stats struct {
 	Batting       *Batting       `json:"batting"`
 	Pitching      *Pitching      `json:"pitching"`
 	Fielding      *Fielding      `json:"fielding"`
+	Standings     *Standings     `json:"standings"`
 	Miscellaneous *Miscellaneous `json:"miscellaneous"`
 }
 
@@ -232,6 +267,58 @@ type Batting struct {
 }
 
 type Pitching struct {
+	EarnedRunAvg                  *float64 `json:"earnedRunAvg"`
+	InningsPitched                *int     `json:"inningsPitched"`
+	HitsAllowed                   *int     `json:"hitsAllowed"`
+	SecondBaseHitsAllowed         *int     `json:"secondBaseHitsAllowed"`
+	ThirdBaseHitsAllowed          *int     `json:"thirdBaseHitsAllowed"`
+	RunsAllowed                   *int     `json:"runsAllowed"`
+	EarnedRunsAllowed             *int     `json:"earnedRunsAllowed"`
+	HomerunsAllowed               *int     `json:"homerunsAllowed"`
+	PitcherWalks                  *int     `json:"pitcherWalks"`
+	PitcherSwings                 *int     `json:"pitcherSwings"`
+	PitcherStrikes                *int     `json:"pitcherStrikes"`
+	PitcherStrikesFoul            *int     `json:"pitcherStrikesFoul"`
+	PitcherStrikesMiss            *int     `json:"pitcherStrikesMiss"`
+	PitcherStrikesLooking         *int     `json:"pitcherStrikesLooking"`
+	PitcherGroundBalls            *int     `json:"pitcherGroundBalls"`
+	PitcherFlyBalls               *int     `json:"pitcherFlyBalls"`
+	PitcherLineDrives             *int     `json:"pitcherLineDrives"`
+	PitcherSacrificeBunts         *int     `json:"pitcherSacrificeBunts"`
+	Pitcher2SeamFastballs         *int     `json:"pitcher2SeamFastballs"`
+	Pitcher4SeamFastballs         *int     `json:"pitcher4SeamFastballs"`
+	PitcherCurveballs             *int     `json:"pitcherCurveballs"`
+	PitcherChangeups              *int     `json:"pitcherChangeups"`
+	PitcherCutters                *int     `json:"pitcherCutters"`
+	PitcherSliders                *int     `json:"pitcherSliders"`
+	PitcherSinkers                *int     `json:"pitcherSinkers"`
+	PitcherSplitters              *int     `json:"pitcherSplitters"`
+	PitcherSacrificeFlies         *int     `json:"pitcherSacrificeFlies"`
+	PitcherStrikeouts             *int     `json:"pitcherStrikeouts"`
+	PitchingAvg                   *float64 `json:"pitchingAvg"`
+	WalksAndHitsPerInningPitched  *float64 `json:"walksAndHitsPerInningPitched"`
+	Shutouts                      *int     `json:"shutouts"`
+	BattersHit                    *int     `json:"battersHit"`
+	PitcherIntentionalWalks       *int     `json:"pitcherIntentionalWalks"`
+	PitcherGroundOuts             *int     `json:"pitcherGroundOuts"`
+	PitcherFlyOuts                *int     `json:"pitcherFlyOuts"`
+	PitcherWildPitches            *int     `json:"pitcherWildPitches"`
+	Balks                         *int     `json:"balks"`
+	PitcherStolenBasesAllowed     *int     `json:"pitcherStolenBasesAllowed"`
+	PitcherCaughtStealing         *int     `json:"pitcherCaughtStealing"`
+	Pickoffs                      *int     `json:"pickoffs"`
+	PickoffAttempts               *int     `json:"pickoffAttempts"`
+	TotalBattersFaced             *int     `json:"totalBattersFaced"`
+	PitchesThrown                 *int     `json:"pitchesThrown"`
+	PitcherGroundOutToFlyOutRatio *float64 `json:"pitcherGroundOutToFlyOutRatio"`
+	PitcherOnBasePct              *float64 `json:"pitcherOnBasePct"`
+	PitcherSluggingPct            *float64 `json:"pitcherSluggingPct"`
+	PitcherOnBasePlusSluggingPct  *float64 `json:"pitcherOnBasePlusSluggingPct"`
+	StrikeoutsPer9Innings         *float64 `json:"strikeoutsPer9Innings"`
+	WalksAllowedPer9Innings       *float64 `json:"walksAllowedPer9Innings"`
+	HitsAllowedPer9Innings        *float64 `json:"hitsAllowedPer9Innings"`
+	StrikeoutsToWalksRatio        *float64 `json:"strikeoutsToWalksRatio"`
+	PitchesPerInning              *float64 `json:"pitchesPerInning"`
 }
 
 type Fielding struct {
@@ -251,7 +338,18 @@ type Fielding struct {
 	PassedBalls               *int     `json:"passedBalls"`
 	FielderWildPitches        *int     `json:"fielderWildPitches"`
 	FieldingPct               *float64 `json:"fieldingPct"`
+	DefenceEfficiencyRatio    *float64 `json:"defenceEfficiencyRatio"`
 	RangeFactor               *float64 `json:"rangeFactor"`
+}
+
+type Standings struct {
+	Wins            *int     `json:"wins"`
+	Losses          *int     `json:"losses"`
+	WinPct          *float64 `json:"winPct"`
+	GamesBack       *float64 `json:"gamesBack"`
+	RunsFor         *int     `json:"runsFor"`
+	RunsAgainst     *int     `json:"runsAgainst"`
+	RunDifferential *float64 `json:"runDifferential"`
 }
 
 type Miscellaneous struct {

@@ -3,7 +3,7 @@ package msf
 // ADDRESS
 const (
 	// URL - api url
-	URL = "https://api.mysportsfeeds.com"
+	MySportsFeedBaseURL = "https://api.mysportsfeeds.com"
 )
 
 // VERSION

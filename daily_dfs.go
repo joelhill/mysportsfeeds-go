@@ -31,14 +31,14 @@ type DailyDfsOptions struct {
 	Force    string
 }
 
-// DefaultDailyDfsOptions - Returns the default options to hit the daily DFS endpoint
-func DefaultDailyDfsOptions() *DailyDfsOptions {
+// NewDailyDfsOptions - Returns the options with most url parts already set to hit the daily DFS endpoint
+func (s *Service) NewDailyDfsOptions() *DailyDfsOptions {
 	return &DailyDfsOptions{
-		URL:     URL,
-		Version: VersionV2_0,
-		Sport:   SportMLB,
-		Format:  FormatJSON,
-		Season:  SeasonCurrent,
+		URL:     s.Config.BaseURL,
+		Version: s.Config.Version,
+		Sport:   s.Config.Sport,
+		Format:  s.Config.Format,
+		Season:  s.Config.Season,
 	}
 }
 

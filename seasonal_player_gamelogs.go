@@ -9,8 +9,8 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-// SeaonalPlayerGamelogsOptions - Are the options to hit the seasonal games endpoint
-type SeaonalPlayerGamelogsOptions struct {
+// SeasonalPlayerGamelogsOptions - Are the options to hit the seasonal games endpoint
+type SeasonalPlayerGamelogsOptions struct {
 	// URL Parts
 	URL     string
 	Version string
@@ -31,24 +31,24 @@ type SeaonalPlayerGamelogsOptions struct {
 	Force    string
 }
 
-// DefaultSeaonalPlayerGamelogsOptions - Returns the default options to hit the seasonal games endpoint
-func DefaultSeaonalPlayerGamelogsOptions() *SeaonalPlayerGamelogsOptions {
-	return &SeaonalPlayerGamelogsOptions{
-		URL:     URL,
-		Version: VersionV2_0,
-		Sport:   SportMLB,
-		Season:  SeasonCurrent,
-		Format:  FormatJSON,
+// NewSeasonalPlayerGamelogsOptions - Returns the options with most url parts already set to hit the seasonal games endpoint
+func (s *Service) NewSeasonalPlayerGamelogsOptions() *SeasonalPlayerGamelogsOptions {
+	return &SeasonalPlayerGamelogsOptions{
+		URL:     s.Config.BaseURL,
+		Version: s.Config.Version,
+		Sport:   s.Config.Sport,
+		Format:  s.Config.Format,
+		Season:  s.Config.Season,
 	}
 }
 
-// SeaonalPlayerGamelogs - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/{season}/player_gamelogs.{format} endoint
-func (s *Service) SeaonalPlayerGamelogs(c context.Context, options *SeaonalPlayerGamelogsOptions) (GameLogIO, error) {
+// SeasonalPlayerGamelogs - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/{season}/player_gamelogs.{format} endoint
+func (s *Service) SeasonalPlayerGamelogs(c context.Context, options *SeasonalPlayerGamelogsOptions) (GameLogIO, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GameLogIO{}
 
 	// make sure we have all the required elements to build the full required url string.
-	err := validateSeaonalPlayerGamelogsURI(options)
+	err := validateSeasonalPlayerGamelogsURI(options)
 	if err != nil {
 		return mapping, err
 	}
@@ -98,7 +98,7 @@ func (s *Service) SeaonalPlayerGamelogs(c context.Context, options *SeaonalPlaye
 	s.Logger = s.Logger.WithFields(logrus.Fields{
 		"URI": uri,
 	})
-	s.Logger.Debug("SeaonalPlayerGamelogs API Call")
+	s.Logger.Debug("SeasonalPlayerGamelogs API Call")
 
 	// make you a client
 	client, err := blaster.NewClient(uri)
@@ -114,16 +114,16 @@ func (s *Service) SeaonalPlayerGamelogs(c context.Context, options *SeaonalPlaye
 	ctx := context.Background()
 	statusCode, err := client.Get(ctx)
 	if err != nil {
-		s.Logger.Errorf("something went wrong making the get request for SeaonalPlayerGamelogs: %s", err.Error())
+		s.Logger.Errorf("something went wrong making the get request for SeasonalPlayerGamelogs: %s", err.Error())
 		return mapping, err
 	}
 
-	s.Logger.Infof("SeaonalPlayerGamelogs Status Code: %d", statusCode)
+	s.Logger.Infof("SeasonalPlayerGamelogs Status Code: %d", statusCode)
 
 	return mapping, nil
 }
 
-func validateSeaonalPlayerGamelogsURI(options *SeaonalPlayerGamelogsOptions) error {
+func validateSeasonalPlayerGamelogsURI(options *SeasonalPlayerGamelogsOptions) error {
 	if len(options.URL) == 0 {
 		return errors.New("missing required option to build the url: URL")
 	}
