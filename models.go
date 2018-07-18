@@ -40,6 +40,11 @@ type BoxscoreIO struct {
 	References    *References    `json:"references"`
 }
 
+type CurrentSeasonIO struct {
+	LastUpdatedOn string    `json:"lastUpdatedOn"`
+	Seasons       *[]Season `json:"seasons"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -411,4 +416,14 @@ type BatterUp struct {
 	BattingPlayer       *Player `json:"battingPlayer"`
 	StandingLeftOrRight *string `json:"standingLeftOrRight"`
 	Result              *string `json:"result"`
+}
+
+type Season struct {
+	Name                 *string          `json:"name"`
+	Slug                 *string          `json:"slug"`
+	StartDate            *string          `json:"startDate"`
+	EndDate              *string          `json:"endDate"`
+	SeasonInterval       *string          `json:"seasonInterval"`
+	SupportedTeamStats   *[]StatReference `json:"supportedTeamStats"`
+	SupportedPlayerStats *[]StatReference `json:"supportedPlayerStats"`
 }
