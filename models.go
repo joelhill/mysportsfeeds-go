@@ -66,6 +66,11 @@ type PlayerStatsTotalsIO struct {
 	References        *References         `json:"references"`
 }
 
+type VenuesIO struct {
+	LastUpdatedOn string    `json:"lastUpdatedOn"`
+	Venues        *[]Venues `json:"venues"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -488,4 +493,9 @@ type PlayerStatsTotal struct {
 	Player *PlayerReference `json:"player"`
 	Team   *Team            `json:"stats"`
 	Stats  *Stats           `json:"stats"`
+}
+
+type Venues struct {
+	Venue    *VenueReference `json:"venue"`
+	homeTeam *TeamReference  `json:"homeTeam"`
 }
