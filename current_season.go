@@ -78,6 +78,10 @@ func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions
 
 	s.Logger.Infof("CurrentSeason Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("CurrentSeason retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

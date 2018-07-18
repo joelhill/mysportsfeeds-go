@@ -116,6 +116,10 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 
 	s.Logger.Infof("DailyDfs Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("DailyDfs retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

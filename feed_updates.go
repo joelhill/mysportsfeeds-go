@@ -75,6 +75,10 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 
 	s.Logger.Infof("FeedUpdates Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("FeedUpdates retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

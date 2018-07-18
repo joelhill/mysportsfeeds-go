@@ -120,6 +120,10 @@ func (s *Service) SeasonalPlayerGamelogs(c context.Context, options *SeasonalPla
 
 	s.Logger.Infof("SeasonalPlayerGamelogs Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("SeasonalPlayerGamelogs retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

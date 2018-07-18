@@ -96,6 +96,10 @@ func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptio
 
 	s.Logger.Infof("GamePlayByPlay Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("GamePlayByPlay retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

@@ -103,6 +103,10 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 
 	s.Logger.Infof("PlayerInjuries Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("PlayerInjuries retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

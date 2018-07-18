@@ -115,6 +115,10 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 
 	s.Logger.Infof("SeasonalDfs Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("SeasonalDfs retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

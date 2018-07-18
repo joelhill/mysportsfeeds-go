@@ -101,6 +101,10 @@ func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) 
 
 	s.Logger.Infof("GameBoxscore Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("GameBoxscore retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

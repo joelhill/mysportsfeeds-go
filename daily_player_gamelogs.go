@@ -117,6 +117,10 @@ func (s *Service) DailyPlayerGamelogs(c context.Context, options *DailyPlayerGam
 
 	s.Logger.Infof("DailyPlayerGamelogs Status Code: %d", statusCode)
 
+	if client.StatusCodeIsError() {
+		s.Logger.Errorf("DailyPlayerGamelogs retuned an unsuccessful status code. Error: %+v", errorPayload)
+	}
+
 	return mapping, nil
 }
 

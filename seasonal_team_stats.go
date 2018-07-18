@@ -9,8 +9,8 @@ import (
 	logrus "github.com/sirupsen/logrus"
 )
 
-// SeasonalTeamGamelogsOptions - Are the options to hit the seasonal team gamelogs endpoint
-type SeasonalTeamGamelogsOptions struct {
+// SeasonalTeamStatsOptions - Are the options to hit the seasonal team stats endpoint
+type SeasonalTeamStatsOptions struct {
 	// URL Parts
 	URL     string
 	Version string
@@ -20,7 +20,6 @@ type SeasonalTeamGamelogsOptions struct {
 
 	// Optional URL Params
 	Team   string
-	Game   string
 	Date   string
 	Stats  string
 	Sort   string
@@ -29,9 +28,9 @@ type SeasonalTeamGamelogsOptions struct {
 	Force  string
 }
 
-// NewSeasonalTeamGamelogsOptions - Returns the options with most url parts already set to hit the seasonal games endpoint
-func (s *Service) NewSeasonalTeamGamelogsOptions() *SeasonalTeamGamelogsOptions {
-	return &SeasonalTeamGamelogsOptions{
+// NewSeasonalTeamStatsOptions - Returns the options with most url parts already set to hit the seasonal team stats endpoint
+func (s *Service) NewSeasonalTeamStatsOptions() *SeasonalTeamStatsOptions {
+	return &SeasonalTeamStatsOptions{
 		URL:     s.Config.BaseURL,
 		Version: s.Config.Version,
 		Sport:   s.Config.Sport,
@@ -40,25 +39,21 @@ func (s *Service) NewSeasonalTeamGamelogsOptions() *SeasonalTeamGamelogsOptions 
 	}
 }
 
-// SeasonalTeamGamelogs - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/team_gamelogs.{format} endoint
-func (s *Service) SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamGamelogsOptions) (GameLogIO, error) {
+// SeasonalTeamStats - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/team_stats_totals.{format} endoint
+func (s *Service) SeasonalTeamStats(c context.Context, options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, error) {
 	errorPayload := make(map[string]interface{})
-	mapping := GameLogIO{}
+	mapping := TeamStatsTotalsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
-	err := validateSeasonalTeamGamelogsURI(options)
+	err := validateSeasonalTeamStatsURI(options)
 	if err != nil {
 		return mapping, err
 	}
 
-	uri := fmt.Sprintf("%s/%s/pull/%s/%s/team_gamelogs.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Format)
+	uri := fmt.Sprintf("%s/%s/pull/%s/%s/team_stats_totals.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Format)
 
 	if len(options.Team) > 0 {
 		uri = fmt.Sprintf("%s&team=%s", uri, options.Team)
-	}
-
-	if len(options.Game) > 0 {
-		uri = fmt.Sprintf("%s&game=%s", uri, options.Game)
 	}
 
 	if len(options.Date) > 0 {
@@ -88,7 +83,7 @@ func (s *Service) SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamG
 	s.Logger = s.Logger.WithFields(logrus.Fields{
 		"URI": uri,
 	})
-	s.Logger.Debug("SeasonalTeamGamelogs API Call")
+	s.Logger.Debug("SeasonalTeamStats API Call")
 
 	// make you a client
 	client, err := blaster.NewClient(uri)
@@ -104,20 +99,20 @@ func (s *Service) SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamG
 	ctx := context.Background()
 	statusCode, err := client.Get(ctx)
 	if err != nil {
-		s.Logger.Errorf("something went wrong making the get request for SeasonalTeamGamelogs: %s", err.Error())
+		s.Logger.Errorf("something went wrong making the get request for SeasonalTeamStats: %s", err.Error())
 		return mapping, err
 	}
 
-	s.Logger.Infof("SeasonalTeamGamelogs Status Code: %d", statusCode)
+	s.Logger.Infof("SeasonalTeamStats Status Code: %d", statusCode)
 
 	if client.StatusCodeIsError() {
-		s.Logger.Errorf("SeasonalTeamGamelogs retuned an unsuccessful status code. Error: %+v", errorPayload)
+		s.Logger.Errorf("SeasonalTeamStats retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
 	return mapping, nil
 }
 
-func validateSeasonalTeamGamelogsURI(options *SeasonalTeamGamelogsOptions) error {
+func validateSeasonalTeamStatsURI(options *SeasonalTeamStatsOptions) error {
 	if len(options.URL) == 0 {
 		return errors.New("missing required option to build the url: URL")
 	}

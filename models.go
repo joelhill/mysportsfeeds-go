@@ -55,6 +55,11 @@ type FeedUpdatesIO struct {
 	FeedUpdates   *[]FeedUpdate `json:"feedUpdates"`
 }
 
+type TeamStatsTotalsIO struct {
+	LastUpdatedOn   string            `json:"lastUpdatedOn"`
+	TeamStatsTotals *[]TeamStatsTotal `json:"teamStatsTotals"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -234,6 +239,7 @@ type Players struct {
 }
 
 type Stats struct {
+	GamesPlayed   *int           `json:"gamesPlayed"`
 	Batting       *Batting       `json:"batting"`
 	Pitching      *Pitching      `json:"pitching"`
 	Fielding      *Fielding      `json:"fielding"`
@@ -465,4 +471,9 @@ type ForDate struct {
 type ForGame struct {
 	Game          *Schedule `json:"game"`
 	LastUpdatedOn *string   `json:"lastUpdatedOn"`
+}
+
+type TeamStatsTotal struct {
+	Team  *TeamReference `json:"team"`
+	Stats *Stats         `json:"stats"`
 }
