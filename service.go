@@ -26,6 +26,9 @@ type IService interface {
 	NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions
 	DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, error)
 
+	NewFeedUpdatesOptions() *FeedUpdatesOptions
+	FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, error)
+
 	NewGameBoxscoreOptions() *GameBoxscoreOptions
 	GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, error)
 

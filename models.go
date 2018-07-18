@@ -50,6 +50,11 @@ type PlayerInjuriesIO struct {
 	Players       *[]PlayerReference `json:"players"`
 }
 
+type FeedUpdatesIO struct {
+	LastUpdatedOn string        `json:"lastUpdatedOn"`
+	FeedUpdates   *[]FeedUpdate `json:"feedUpdates"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -436,4 +441,28 @@ type Season struct {
 type CurrentInjury struct {
 	Description        *string `json:"description"`
 	PlayingProbability *string `json:"playingProbability"`
+}
+
+type FeedUpdate struct {
+	Feed          *Feed      `json:"feed"`
+	ForDate       *[]ForDate `json:"forDates"`
+	ForGames      *[]ForGame `json:"forGames"`
+	LastUpdatedOn *string    `json:"lastUpdatedOn"`
+}
+
+type Feed struct {
+	Name         *string `json:"name"`
+	Version      *string `json:"version"`
+	Abbreviation *string `json:"abbreviation"`
+	Description  *string `json:"description"`
+}
+
+type ForDate struct {
+	ForDate       *string `json:"forDate"`
+	LastUpdatedOn *string `json:"lastUpdatedOn"`
+}
+
+type ForGame struct {
+	Game          *Schedule `json:"game"`
+	LastUpdatedOn *string   `json:"lastUpdatedOn"`
 }
