@@ -60,6 +60,12 @@ type TeamStatsTotalsIO struct {
 	TeamStatsTotals *[]TeamStatsTotal `json:"teamStatsTotals"`
 }
 
+type PlayerStatsTotalsIO struct {
+	LastUpdatedOn     string              `json:"lastUpdatedOn"`
+	PlayerStatsTotals *[]PlayerStatsTotal `json:"playerStatsTotals"`
+	References        *References         `json:"references"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -476,4 +482,10 @@ type ForGame struct {
 type TeamStatsTotal struct {
 	Team  *TeamReference `json:"team"`
 	Stats *Stats         `json:"stats"`
+}
+
+type PlayerStatsTotal struct {
+	Player *PlayerReference `json:"player"`
+	Team   *Team            `json:"stats"`
+	Stats  *Stats           `json:"stats"`
 }
