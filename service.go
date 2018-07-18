@@ -11,6 +11,9 @@ import (
 
 // IService - all functions that implement the My Sports Feed Service Interface.
 type IService interface {
+	NewCurrentSeasonOptions() *CurrentSeasonOptions
+	CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, error)
+
 	NewDailyDfsOptions() *DailyDfsOptions
 	DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, error)
 
@@ -31,6 +34,9 @@ type IService interface {
 
 	NewGamePlayByPlayOptions() *GamePlayByPlayOptions
 	GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, error)
+
+	NewPlayerInjuriesOptions() *PlayerInjuriesOptions
+	PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, error)
 
 	NewSeasonalDfsOptions() *SeasonalDfsOptions
 	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error)
