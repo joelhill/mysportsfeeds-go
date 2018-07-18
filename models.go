@@ -71,6 +71,12 @@ type VenuesIO struct {
 	Venues        *[]Venues `json:"venues"`
 }
 
+type PlayersIO struct {
+	LastUpdatedOn string        `json:"lastUpdatedOn"`
+	Players       *[]Players    `json:"players"`
+	References    *[]References `json:"references"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -179,16 +185,19 @@ type GameReference struct {
 
 type PlayerReference struct {
 	Player
-	Height       *string     `json:"height"`
-	Weight       *float64    `json:"weight"`
-	BirthDate    *string     `json:"birthDate"`
-	Age          *int        `json:"age"`
-	BirthCity    *string     `json:"birthCity"`
-	BirthCountry *string     `json:"birthCountry"`
-	Rookie       *bool       `json:"rookie"`
-	College      *string     `json:"college"`
-	Twitter      *string     `json:"twitter"`
-	Handedness   *Handedness `json:"handedness"`
+	Height           *string          `json:"height"`
+	Weight           *float64         `json:"weight"`
+	BirthDate        *string          `json:"birthDate"`
+	Age              *int             `json:"age"`
+	BirthCity        *string          `json:"birthCity"`
+	BirthCountry     *string          `json:"birthCountry"`
+	Rookie           *bool            `json:"rookie"`
+	College          *string          `json:"college"`
+	Twitter          *string          `json:"twitter"`
+	Handedness       *Handedness      `json:"handedness"`
+	Drafted          *Drafted         `json:"drafted"`
+	OfficialImageSrc *string          `json:"officialImageSrc"`
+	ExternalMapping  *ExternalMapping `json:"externalMapping"`
 }
 
 type StatReference struct {
@@ -202,6 +211,11 @@ type StatReference struct {
 type Handedness struct {
 	Bats   string `json:"bats"`
 	Throws string `json:"throws"`
+}
+
+type ExternalMapping struct {
+	Source *string `json:"source"`
+	ID     *int    `json:"id"`
 }
 
 type GameLog struct {
@@ -226,6 +240,7 @@ type Player struct {
 	JerseyNumber        *int           `json:"jerseyNumber"`
 	CurrentTeam         *Team          `json:"currentTeam"`
 	CurrentRosterStatus *string        `json:"currentRosterStatus"`
+	CurrentContractYear *bool          `json:"currentContractYear"`
 	CurrentInjury       *CurrentInjury `json:"currentInjury"`
 }
 
@@ -245,8 +260,9 @@ type BoxscoreStats struct {
 }
 
 type Players struct {
-	Player      *Player  `json:"player"`
-	PlayerStats *[]Stats `json:"playerStats"`
+	Player       *PlayerReference `json:"player"`
+	TeamAsOfDate *Team            `json:"teamAsOfDate"`
+	PlayerStats  *[]Stats         `json:"playerStats"`
 }
 
 type Stats struct {
@@ -497,5 +513,14 @@ type PlayerStatsTotal struct {
 
 type Venues struct {
 	Venue    *VenueReference `json:"venue"`
-	homeTeam *TeamReference  `json:"homeTeam"`
+	HomeTeam *TeamReference  `json:"homeTeam"`
+}
+
+type Drafted struct {
+	Year        *int  `json:"year"`
+	Team        *Team `json:"team"`
+	PickTeam    *Team `json:"pickTeam"`
+	Round       *int  `json:"round"`
+	RoundPick   *int  `json:"roundPick"`
+	OverallPick *int  `json:"overallPick"`
 }
