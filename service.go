@@ -23,6 +23,9 @@ type IService interface {
 	NewDailyPlayerGamelogsOptions() *DailyPlayerGamelogsOptions
 	DailyPlayerGamelogs(c context.Context, options *DailyPlayerGamelogsOptions) (GameLogIO, error)
 
+	NewDailyStandingsOptions() *DailyStandingsOptions
+	DailyStandings(c context.Context, options *DailyStandingsOptions) (StandingsIO, error)
+
 	NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions
 	DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, error)
 
@@ -41,6 +44,9 @@ type IService interface {
 	NewPlayerInjuriesOptions() *PlayerInjuriesOptions
 	PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, error)
 
+	NewPlayersOptions() *PlayersOptions
+	Players(c context.Context, options *PlayersOptions) (PlayersIO, error)
+
 	NewSeasonalDfsOptions() *SeasonalDfsOptions
 	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error)
 
@@ -50,8 +56,17 @@ type IService interface {
 	NewSeasonalPlayerGamelogsOptions() *SeasonalPlayerGamelogsOptions
 	SeasonalPlayerGamelogs(c context.Context, options *SeasonalPlayerGamelogsOptions) (GameLogIO, error)
 
+	NewSeasonalPlayerStatsOptions() *SeasonalPlayerStatsOptions
+	SeasonalPlayerStats(c context.Context, options *SeasonalPlayerStatsOptions) (PlayerStatsTotalsIO, error)
+
 	NewSeasonalTeamGamelogsOptions() *SeasonalTeamGamelogsOptions
 	SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamGamelogsOptions) (GameLogIO, error)
+
+	NewSeasonalTeamStatsOptions() *SeasonalTeamStatsOptions
+	SeasonalTeamStats(c context.Context, options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, error)
+
+	NewSeasonalVenuesOptions() *SeasonalVenuesOptions
+	SeasonalVenues(c context.Context, options *SeasonalVenuesOptions) (VenuesIO, error)
 }
 
 // Service - dependencies for the my sports feed service

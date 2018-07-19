@@ -77,6 +77,12 @@ type PlayersIO struct {
 	References    *[]References `json:"references"`
 }
 
+type StandingsIO struct {
+	LastUpdatedOn string        `json:"lastUpdatedOn"`
+	Teams         *[]Teams      `json:"players"`
+	References    *[]References `json:"references"`
+}
+
 // Sub Models
 type Game struct {
 	Schedule *Schedule `json:"schedule"`
@@ -523,4 +529,21 @@ type Drafted struct {
 	Round       *int  `json:"round"`
 	RoundPick   *int  `json:"roundPick"`
 	OverallPick *int  `json:"overallPick"`
+}
+
+type Teams struct {
+	Team           *TeamReference `json:"team"`
+	Stats          *Stats         `json:"stats"`
+	OverallRank    *Rank          `json:"overallRank"`
+	ConferenceRank *Rank          `json:"conferenceRank"`
+	DivisionRank   *Rank          `json:"divisionRank"`
+	PlayoffRank    *Rank          `json:"playoffRank"`
+}
+
+type Rank struct {
+	ConferenceName *string  `json:"conferenceName"`
+	DivisionName   *string  `json:"divisionName"`
+	AppliesTo      *string  `json:"appliesTo"`
+	Rank           *int     `json:"rank"`
+	GamesBack      *float64 `json:"gamesBack"`
 }
