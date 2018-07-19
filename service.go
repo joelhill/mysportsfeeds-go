@@ -9,6 +9,11 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 )
 
+const (
+	// type of compression header
+	CompressionHeaderGzip = "gzip"
+)
+
 // IService - all functions that implement the My Sports Feed Service Interface.
 type IService interface {
 	NewCurrentSeasonOptions() *CurrentSeasonOptions

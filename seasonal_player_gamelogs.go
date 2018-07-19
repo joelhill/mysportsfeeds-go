@@ -107,6 +107,7 @@ func (s *Service) SeasonalPlayerGamelogs(c context.Context, options *SeasonalPla
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)

@@ -62,6 +62,7 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)

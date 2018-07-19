@@ -90,6 +90,7 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)

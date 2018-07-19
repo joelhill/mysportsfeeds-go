@@ -104,6 +104,7 @@ func (s *Service) DailyPlayerGamelogs(c context.Context, options *DailyPlayerGam
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)

@@ -103,6 +103,7 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)

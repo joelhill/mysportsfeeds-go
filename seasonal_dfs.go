@@ -102,6 +102,7 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 		return mapping, err
 	}
 
+	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
 	client.SetHeader("Authorization", s.Config.Authorization)
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
