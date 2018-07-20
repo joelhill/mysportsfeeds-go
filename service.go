@@ -99,7 +99,7 @@ func NewService(config *Config) *Service {
 	logrus.SetLevel(logLevel)
 
 	blaster.SetDefaults(&blaster.Defaults{
-		ServiceName:    "go-mysportsfeeds",
+		ServiceName:    "mysportsfeeds-go",
 		RequireHeaders: false,
 		StatsdRate:     0.0,
 	})
