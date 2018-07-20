@@ -150,7 +150,7 @@ type ScoringPlay struct {
 type References struct {
 	TeamReferences       *[]TeamReference   `json:"teamReferences"`
 	TeamStatReferences   *[]StatReference   `json:"teamStatReferences"`
-	VenueReferences      *VenueReference    `json:"venueReferences"`
+	VenueReferences      *[]VenueReference  `json:"venueReferences"`
 	GameReferences       *[]GameReference   `json:"gameReferences"`
 	PlayerReferences     *[]PlayerReference `json:"playerReferences"`
 	PlayerStatReferences *[]StatReference   `json:"playerStatReferences"`
