@@ -1,4 +1,4 @@
-package examples
+package main
 
 import (
 	"context"
@@ -8,13 +8,15 @@ import (
 	sf "github.com/joelhill/mysportsfeeds-go"
 )
 
-func test() {
+func main() {
 	config := sf.NewConfig("Basic amlnZ2lkeXVvOk1ZU1BPUlRTRkVFRFM=")
 
 	client := sf.NewService(config)
 	c := context.Background()
-	seasonalGamesOptions := client.NewSeasonalGamesOptions()
-	sg, sgErr := client.SeasonalGames(c, seasonalGamesOptions)
+	spew.Dump(client)
+	seasonalGamesOptions := client.NewGameLineupOptions()
+	seasonalGamesOptions.Game = "20180506-CHC-STL"
+	sg, sgErr := client.GameLineup(c, seasonalGamesOptions)
 	spew.Dump(sg)
 	spew.Dump(sgErr)
 }
