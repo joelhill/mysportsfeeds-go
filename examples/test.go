@@ -13,10 +13,10 @@ func main() {
 
 	client := sf.NewService(config)
 	c := context.Background()
-	spew.Dump(client)
-	seasonalGamesOptions := client.NewGameLineupOptions()
-	seasonalGamesOptions.Game = "20180506-CHC-STL"
-	sg, sgErr := client.GameLineup(c, seasonalGamesOptions)
+	dailyGameOptions := client.NewDailyGamesOptions()
+	dailyGameOptions.Date = "20180715"
+	sg, sgErr := client.DailyGames(c, dailyGameOptions)
+
 	spew.Dump(sg)
 	spew.Dump(sgErr)
 }

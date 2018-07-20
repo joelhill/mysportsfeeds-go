@@ -2,10 +2,12 @@ package blaster
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -128,6 +130,15 @@ type Client struct {
 
 	// mask of the route
 	routeMask string
+}
+
+type gzreadCloser struct {
+	*gzip.Reader
+	io.Closer
+}
+
+func (gz gzreadCloser) Close() error {
+	return gz.Closer.Close()
 }
 
 // endregion
@@ -381,6 +392,15 @@ func (c *Client) doInternal(ctx context.Context, payload interface{}) (int, erro
 		}
 
 		return c.failAfterRequest(responseErr)
+	}
+
+	if response.Header.Get("Content-Encoding") == "gzip" {
+		response.Header.Del("Content-Length")
+		zr, err := gzip.NewReader(response.Body)
+		if err != nil {
+			return 400, err
+		}
+		response.Body = gzreadCloser{zr, response.Body}
 	}
 
 	// set status code and error response flag
