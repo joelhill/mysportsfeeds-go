@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	blaster "github.com/joelhill/go-rest-http-blaster"
 	logrus "github.com/sirupsen/logrus"
@@ -47,7 +48,10 @@ func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (Gam
 		return mapping, err
 	}
 
-	uri := fmt.Sprintf("%s/%s/pull/%s/%s/games/%s/lineup.%s?1=1", options.URL, options.Version, options.Sport, options.Season, options.Game, options.Format)
+	t := time.Now()
+	cacheBuster := t.Format("20060102150405")
+
+	uri := fmt.Sprintf("%s/%s/pull/%s/%s/games/%s/lineup.%s?cachebuster=%s", options.URL, options.Version, options.Sport, options.Season, options.Game, options.Format, cacheBuster)
 
 	if len(options.Position) > 0 {
 		uri = fmt.Sprintf("%s&position=%s", uri, options.Position)

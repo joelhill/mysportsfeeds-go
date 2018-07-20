@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	blaster "github.com/joelhill/go-rest-http-blaster"
 	logrus "github.com/sirupsen/logrus"
@@ -44,7 +45,10 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 		return mapping, err
 	}
 
-	uri := fmt.Sprintf("%s/%s/pull/%s/latest_updates.%s?1=1", options.URL, options.Version, options.Sport, options.Format)
+	t := time.Now()
+	cacheBuster := t.Format("20060102150405")
+
+	uri := fmt.Sprintf("%s/%s/pull/%s/latest_updates.%s?cachebuster=%s", options.URL, options.Version, options.Sport, options.Format, cacheBuster)
 
 	if len(options.Force) > 0 {
 		uri = fmt.Sprintf("%s&force=%s", uri, options.Force)
