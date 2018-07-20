@@ -1,4 +1,4 @@
-# go-mysportsfeeds
+# mysportsfeeds-go
 Go library to use MySportsFeeds API
 
 ## Example Use
@@ -7,7 +7,7 @@ Go library to use MySportsFeeds API
 import (
     "context"
 
-    msf "github.com/joelhill/go-mysportsfeeds"
+    msf "github.com/joelhill/mysportsfeeds-go"
 )
 
 ctx := context.Context
