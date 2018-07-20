@@ -225,10 +225,10 @@ type ExternalMapping struct {
 }
 
 type GameLog struct {
-	Game   GameLogGame `json:"game"`
-	Player Player      `json:"player"`
-	Team   `json:"team"`
-	Stats  `json:""`
+	Game   *GameLogGame `json:"game"`
+	Player *Player      `json:"player"`
+	Team   *Team        `json:"team"`
+	Stats  *Stats       `json:"stats"`
 }
 
 type GameLogGame struct {
