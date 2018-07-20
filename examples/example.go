@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	config := sf.NewConfig("Basic amlnZ2lkeXVvOk1ZU1BPUlRTRkVFRFM=")
+	config := sf.NewConfig("Basic setthishere")
 
 	client := sf.NewService(config)
 	c := context.Background()
