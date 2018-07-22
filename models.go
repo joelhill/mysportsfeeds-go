@@ -78,9 +78,9 @@ type PlayersIO struct {
 }
 
 type StandingsIO struct {
-	LastUpdatedOn string        `json:"lastUpdatedOn"`
-	Teams         *[]Teams      `json:"players"`
-	References    *[]References `json:"references"`
+	LastUpdatedOn string      `json:"lastUpdatedOn"`
+	Teams         *[]Teams    `json:"teams"`
+	References    *References `json:"references"`
 }
 
 // Sub Models
@@ -157,16 +157,16 @@ type References struct {
 }
 
 type TeamReference struct {
-	ID           int       `json:"id"`
-	City         string    `json:"city"`
-	Name         string    `json:"name"`
-	Abbreviation string    `json:"abbreviation"`
-	HomeVenue    HomeVenue `json:"homeVenue"`
+	ID           *int       `json:"id"`
+	City         *string    `json:"city"`
+	Name         *string    `json:"name"`
+	Abbreviation *string    `json:"abbreviation"`
+	HomeVenue    *HomeVenue `json:"homeVenue"`
 }
 
 type HomeVenue struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID   *int    `json:"id"`
+	Name *string `json:"name"`
 }
 
 type VenueReference struct {
@@ -336,7 +336,7 @@ type Batting struct {
 
 type Pitching struct {
 	EarnedRunAvg                  *float64 `json:"earnedRunAvg"`
-	InningsPitched                *int     `json:"inningsPitched"`
+	InningsPitched                *float64 `json:"inningsPitched"`
 	HitsAllowed                   *int     `json:"hitsAllowed"`
 	SecondBaseHitsAllowed         *int     `json:"secondBaseHitsAllowed"`
 	ThirdBaseHitsAllowed          *int     `json:"thirdBaseHitsAllowed"`
