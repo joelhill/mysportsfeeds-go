@@ -9,13 +9,14 @@ import (
 )
 
 func main() {
-	config := sf.NewConfig("Basic amlnZ2lkeXVvOk1ZU1BPUlRTRkVFRFM=")
+	config := sf.NewConfig("Basic afsdfasdfasdfsadffdfasdfadffas")
 
 	client := sf.NewService(config)
 	c := context.Background()
-	dailyGameOptions := client.NewCurrentSeasonOptions()
-	sg, sgErr := client.CurrentSeason(c, dailyGameOptions)
+	dailyGameOptions := client.NewDailyGamesOptions()
+	dg, statusCode, dgErr := client.DailyGames(c, dailyGameOptions)
 
-	spew.Dump(sg)
-	spew.Dump(sgErr)
+	spew.Dump(dg)
+	spew.Dump(statusCode)
+	spew.Dump(dgErr)
 }

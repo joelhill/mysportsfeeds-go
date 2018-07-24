@@ -44,14 +44,14 @@ func (s *Service) NewDailyDfsOptions() *DailyDfsOptions {
 }
 
 // DailyDfs - hits the https://api.mysportsfeeds.com/{version/pull/{sport}/{season}/date/{date}/dfs.{format} endpoint
-func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, error) {
+func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := DfsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateDailyDfsURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -104,7 +104,7 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -116,7 +116,7 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for DailyDfs: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("DailyDfs Status Code: %d", statusCode)
@@ -125,7 +125,7 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 		s.Logger.Errorf("DailyDfs retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateDailyDfsURI(options *DailyDfsOptions) error {

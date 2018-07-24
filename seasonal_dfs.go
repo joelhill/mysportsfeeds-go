@@ -43,14 +43,14 @@ func (s *Service) NewSeasonalDfsOptions() *SeasonalDfsOptions {
 }
 
 // SeasonalDfs - hits the https://api.mysportsfeeds.com/v2.0/pull/{sport}/{season}/dfs.{format} endpoint
-func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error) {
+func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := DfsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateSeasonalDfsURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -103,7 +103,7 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -115,7 +115,7 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for SeasonalDfs: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("SeasonalDfs Status Code: %d", statusCode)
@@ -124,7 +124,7 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 		s.Logger.Errorf("SeasonalDfs retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateSeasonalDfsURI(options *SeasonalDfsOptions) error {

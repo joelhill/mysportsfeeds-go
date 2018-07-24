@@ -44,14 +44,14 @@ func (s *Service) NewSeasonalPlayerStatsOptions() *SeasonalPlayerStatsOptions {
 }
 
 // SeasonalPlayerStats - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/player_stats_totals.{format} endoint
-func (s *Service) SeasonalPlayerStats(c context.Context, options *SeasonalPlayerStatsOptions) (PlayerStatsTotalsIO, error) {
+func (s *Service) SeasonalPlayerStats(c context.Context, options *SeasonalPlayerStatsOptions) (PlayerStatsTotalsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := PlayerStatsTotalsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateSeasonalPlayerStatsURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -108,7 +108,7 @@ func (s *Service) SeasonalPlayerStats(c context.Context, options *SeasonalPlayer
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -120,7 +120,7 @@ func (s *Service) SeasonalPlayerStats(c context.Context, options *SeasonalPlayer
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for SeasonalPlayerStats: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("SeasonalPlayerStats Status Code: %d", statusCode)
@@ -129,7 +129,7 @@ func (s *Service) SeasonalPlayerStats(c context.Context, options *SeasonalPlayer
 		s.Logger.Errorf("SeasonalPlayerStats retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateSeasonalPlayerStatsURI(options *SeasonalPlayerStatsOptions) error {

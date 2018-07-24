@@ -42,14 +42,14 @@ func (s *Service) NewPlayersOptions() *PlayersOptions {
 }
 
 // Players - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/players.{format} endoint
-func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO, error) {
+func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := PlayersIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validatePlayersURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -106,7 +106,7 @@ func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -118,7 +118,7 @@ func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for Players: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("Players Status Code: %d", statusCode)
@@ -127,7 +127,7 @@ func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO
 		s.Logger.Errorf("Players retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validatePlayersURI(options *PlayersOptions) error {

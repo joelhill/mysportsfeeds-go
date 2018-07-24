@@ -40,14 +40,14 @@ func (s *Service) NewGamePlayByPlayOptions() *GamePlayByPlayOptions {
 }
 
 // GamePlayByPlay - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/playbyplay.{format} endoint
-func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, error) {
+func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GamePlayByPlayIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateGamePlayByPlayURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -84,7 +84,7 @@ func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptio
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -96,7 +96,7 @@ func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptio
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for GamePlayByPlay: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("GamePlayByPlay Status Code: %d", statusCode)
@@ -105,7 +105,7 @@ func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptio
 		s.Logger.Errorf("GamePlayByPlay retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateGamePlayByPlayURI(options *GamePlayByPlayOptions) error {

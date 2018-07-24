@@ -10,68 +10,68 @@ import (
 )
 
 const (
-	// type of compression header
+	// CompressionHeaderGzip - type of compression header
 	CompressionHeaderGzip = "gzip"
 )
 
 // IService - all functions that implement the My Sports Feed Service Interface.
 type IService interface {
 	NewCurrentSeasonOptions() *CurrentSeasonOptions
-	CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, error)
+	CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, int, error)
 
 	NewDailyDfsOptions() *DailyDfsOptions
-	DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, error)
+	DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, int, error)
 
 	NewDailyGamesOptions() *DailyGamesOptions
-	DailyGames(c context.Context, options *DailyGamesOptions) (GamesIO, error)
+	DailyGames(c context.Context, options *DailyGamesOptions) (GamesIO, int, error)
 
 	NewDailyPlayerGamelogsOptions() *DailyPlayerGamelogsOptions
-	DailyPlayerGamelogs(c context.Context, options *DailyPlayerGamelogsOptions) (GameLogIO, error)
+	DailyPlayerGamelogs(c context.Context, options *DailyPlayerGamelogsOptions) (GameLogIO, int, error)
 
 	NewDailyStandingsOptions() *DailyStandingsOptions
-	DailyStandings(c context.Context, options *DailyStandingsOptions) (StandingsIO, error)
+	DailyStandings(c context.Context, options *DailyStandingsOptions) (StandingsIO, int, error)
 
 	NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions
-	DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, error)
+	DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, int, error)
 
 	NewFeedUpdatesOptions() *FeedUpdatesOptions
-	FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, error)
+	FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, int, error)
 
 	NewGameBoxscoreOptions() *GameBoxscoreOptions
-	GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, error)
+	GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, int, error)
 
 	NewGameLineupOptions() *GameLineupOptions
-	GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, error)
+	GameLineup(c context.Context, options *GameLineupOptions) (BoxscoreIO, int, error)
 
 	NewGamePlayByPlayOptions() *GamePlayByPlayOptions
-	GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, error)
+	GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, int, error)
 
 	NewPlayerInjuriesOptions() *PlayerInjuriesOptions
-	PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, error)
+	PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, int, error)
 
 	NewPlayersOptions() *PlayersOptions
-	Players(c context.Context, options *PlayersOptions) (PlayersIO, error)
+	Players(c context.Context, options *PlayersOptions) (PlayersIO, int, error)
 
 	NewSeasonalDfsOptions() *SeasonalDfsOptions
-	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, error)
+	SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, int, error)
 
 	NewSeasonalGamesOptions() *SeasonalGamesOptions
-	SeasonalGames(c context.Context, options *SeasonalGamesOptions) (GamesIO, error)
+	SeasonalGames(c context.Context, options *SeasonalGamesOptions) (GamesIO, int, error)
 
 	NewSeasonalPlayerGamelogsOptions() *SeasonalPlayerGamelogsOptions
-	SeasonalPlayerGamelogs(c context.Context, options *SeasonalPlayerGamelogsOptions) (GameLogIO, error)
+	SeasonalPlayerGamelogs(c context.Context, options *SeasonalPlayerGamelogsOptions) (GameLogIO, int, error)
 
 	NewSeasonalPlayerStatsOptions() *SeasonalPlayerStatsOptions
-	SeasonalPlayerStats(c context.Context, options *SeasonalPlayerStatsOptions) (PlayerStatsTotalsIO, error)
+	SeasonalPlayerStats(c context.Context, options *SeasonalPlayerStatsOptions) (PlayerStatsTotalsIO, int, error)
 
 	NewSeasonalTeamGamelogsOptions() *SeasonalTeamGamelogsOptions
-	SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamGamelogsOptions) (GameLogIO, error)
+	SeasonalTeamGamelogs(c context.Context, options *SeasonalTeamGamelogsOptions) (GameLogIO, int, error)
 
 	NewSeasonalTeamStatsOptions() *SeasonalTeamStatsOptions
-	SeasonalTeamStats(c context.Context, options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, error)
+	SeasonalTeamStats(c context.Context, options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, int, error)
 
 	NewSeasonalVenuesOptions() *SeasonalVenuesOptions
-	SeasonalVenues(c context.Context, options *SeasonalVenuesOptions) (VenuesIO, error)
+	SeasonalVenues(c context.Context, options *SeasonalVenuesOptions) (VenuesIO, int, error)
 }
 
 // Service - dependencies for the my sports feed service

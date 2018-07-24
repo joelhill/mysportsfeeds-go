@@ -39,14 +39,14 @@ func (s *Service) NewPlayerInjuriesOptions() *PlayerInjuriesOptions {
 }
 
 // PlayerInjuries - hits the https://api.mysportsfeeds.com/{version/pull/{sport}/{season}/date/{date}/dfs.{format} endpoint
-func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, error) {
+func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := PlayerInjuriesIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validatePlayerInjuriesURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -91,7 +91,7 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -103,7 +103,7 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for PlayerInjuries: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("PlayerInjuries Status Code: %d", statusCode)
@@ -112,7 +112,7 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 		s.Logger.Errorf("PlayerInjuries retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validatePlayerInjuriesURI(options *PlayerInjuriesOptions) error {

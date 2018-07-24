@@ -42,14 +42,14 @@ func (s *Service) NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions {
 }
 
 // DailyTeamGamelogs - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/date/{date}/team_gamelogs.{format} endoint
-func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, error) {
+func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GameLogIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateDailyTeamGamelogsURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -94,7 +94,7 @@ func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelog
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -106,7 +106,7 @@ func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelog
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for DailyTeamGamelogs: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("DailyTeamGamelogs Status Code: %d", statusCode)
@@ -115,7 +115,7 @@ func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelog
 		s.Logger.Errorf("DailyTeamGamelogs retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateDailyTeamGamelogsURI(options *DailyTeamGamelogsOptions) error {

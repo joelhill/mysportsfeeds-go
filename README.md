@@ -15,5 +15,5 @@ authorization := "Basic asfafasdfasdfasdfasasdfsadfasdfsd"
 config := msf.NewConfig(authorization)
 client := msf.NewService(config)
 options := client.NewSeasonalGamesOptions()
-games := client.SeasonalGames(ctx, options)
+games, statusCode, err := client.SeasonalGames(ctx, options)
 ```

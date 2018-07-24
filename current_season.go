@@ -34,14 +34,14 @@ func (s *Service) NewCurrentSeasonOptions() *CurrentSeasonOptions {
 }
 
 // CurrentSeason - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/current_season.{format} endpoint
-func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, error) {
+func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := CurrentSeasonIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateCurrentSeasonURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -66,7 +66,7 @@ func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -78,7 +78,7 @@ func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for CurrentSeason: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("CurrentSeason Status Code: %d", statusCode)
@@ -87,7 +87,7 @@ func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions
 		s.Logger.Errorf("CurrentSeason retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateCurrentSeasonURI(options *CurrentSeasonOptions) error {

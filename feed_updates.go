@@ -35,14 +35,14 @@ func (s *Service) NewFeedUpdatesOptions() *FeedUpdatesOptions {
 }
 
 // FeedUpdates - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/latest_updates.{format} endpoint
-func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, error) {
+func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := FeedUpdatesIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateFeedUpdatesURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -63,7 +63,7 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -75,7 +75,7 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for FeedUpdates: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("FeedUpdates Status Code: %d", statusCode)
@@ -84,7 +84,7 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 		s.Logger.Errorf("FeedUpdates retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateFeedUpdatesURI(options *FeedUpdatesOptions) error {

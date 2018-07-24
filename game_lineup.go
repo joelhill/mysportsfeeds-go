@@ -38,14 +38,14 @@ func (s *Service) NewGameLineupOptions() *GameLineupOptions {
 }
 
 // GameLineup - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/lineup.{format} endoint
-func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (GameLineupIO, error) {
+func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (GameLineupIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GameLineupIO{}
 
 	// make sure we have all the required elements to build the full required url string.
 	err := validateGameLineupURI(options)
 	if err != nil {
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	t := time.Now()
@@ -74,7 +74,7 @@ func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (Gam
 	client, err := blaster.NewClient(uri)
 	if err != nil {
 		s.Logger.Errorf("failed to create a http client: %s", err.Error())
-		return mapping, err
+		return mapping, 0, err
 	}
 
 	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
@@ -86,7 +86,7 @@ func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (Gam
 	statusCode, err := client.Get(ctx)
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for GameLineup: %s", err.Error())
-		return mapping, err
+		return mapping, statusCode, err
 	}
 
 	s.Logger.Infof("GameLineup Status Code: %d", statusCode)
@@ -95,7 +95,7 @@ func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (Gam
 		s.Logger.Errorf("GameLineup retuned an unsuccessful status code. Error: %+v", errorPayload)
 	}
 
-	return mapping, nil
+	return mapping, statusCode, nil
 }
 
 func validateGameLineupURI(options *GameLineupOptions) error {
