@@ -36,7 +36,7 @@ type BoxscoreIO struct {
 	LastUpdatedOn string         `json:"lastUpdatedOn"`
 	Game          *Schedule      `json:"game"`
 	Scoring       *Score         `json:"scoring"`
-	Stats         *StatsHomeAway `json:"references"`
+	Stats         *StatsHomeAway `json:"stats"`
 	References    *References    `json:"references"`
 }
 
