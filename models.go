@@ -14,7 +14,7 @@ type DfsIO struct {
 
 type GameLogIO struct {
 	LastUpdatedOn string      `json:"lastUpdatedOn"`
-	GameLog       *[]GameLog  `json:"gamelog"`
+	GameLog       *[]GameLog  `json:"gamelogs"`
 	References    *References `json:"references"`
 }
 
