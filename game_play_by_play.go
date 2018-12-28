@@ -40,7 +40,7 @@ func (s *Service) NewGamePlayByPlayOptions() *GamePlayByPlayOptions {
 }
 
 // GamePlayByPlay - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/playbyplay.{format} endoint
-func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptions) (GamePlayByPlayIO, int, error) {
+func (s *Service) GamePlayByPlay(options *GamePlayByPlayOptions) (GamePlayByPlayIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GamePlayByPlayIO{}
 
@@ -92,8 +92,7 @@ func (s *Service) GamePlayByPlay(c context.Context, options *GamePlayByPlayOptio
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for GamePlayByPlay: %s", err.Error())
 		return mapping, statusCode, err

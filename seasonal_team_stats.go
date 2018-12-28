@@ -41,7 +41,7 @@ func (s *Service) NewSeasonalTeamStatsOptions() *SeasonalTeamStatsOptions {
 }
 
 // SeasonalTeamStats - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/team_stats_totals.{format} endoint
-func (s *Service) SeasonalTeamStats(c context.Context, options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, int, error) {
+func (s *Service) SeasonalTeamStats(options *SeasonalTeamStatsOptions) (TeamStatsTotalsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := TeamStatsTotalsIO{}
 
@@ -101,8 +101,7 @@ func (s *Service) SeasonalTeamStats(c context.Context, options *SeasonalTeamStat
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for SeasonalTeamStats: %s", err.Error())
 		return mapping, statusCode, err

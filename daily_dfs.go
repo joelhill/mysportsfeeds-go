@@ -44,7 +44,7 @@ func (s *Service) NewDailyDfsOptions() *DailyDfsOptions {
 }
 
 // DailyDfs - hits the https://api.mysportsfeeds.com/{version/pull/{sport}/{season}/date/{date}/dfs.{format} endpoint
-func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, int, error) {
+func (s *Service) DailyDfs(options *DailyDfsOptions) (DfsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := DfsIO{}
 
@@ -112,8 +112,7 @@ func (s *Service) DailyDfs(c context.Context, options *DailyDfsOptions) (DfsIO, 
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for DailyDfs: %s", err.Error())
 		return mapping, statusCode, err

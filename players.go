@@ -42,7 +42,7 @@ func (s *Service) NewPlayersOptions() *PlayersOptions {
 }
 
 // Players - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/players.{format} endoint
-func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO, int, error) {
+func (s *Service) Players(options *PlayersOptions) (PlayersIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := PlayersIO{}
 
@@ -114,8 +114,7 @@ func (s *Service) Players(c context.Context, options *PlayersOptions) (PlayersIO
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for Players: %s", err.Error())
 		return mapping, statusCode, err

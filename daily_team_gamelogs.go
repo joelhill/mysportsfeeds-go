@@ -42,7 +42,7 @@ func (s *Service) NewDailyTeamGamelogsOptions() *DailyTeamGamelogsOptions {
 }
 
 // DailyTeamGamelogs - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/date/{date}/team_gamelogs.{format} endoint
-func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelogsOptions) (GameLogIO, int, error) {
+func (s *Service) DailyTeamGamelogs(options *DailyTeamGamelogsOptions) (GameLogIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GameLogIO{}
 
@@ -102,8 +102,7 @@ func (s *Service) DailyTeamGamelogs(c context.Context, options *DailyTeamGamelog
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for DailyTeamGamelogs: %s", err.Error())
 		return mapping, statusCode, err

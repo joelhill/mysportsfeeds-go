@@ -35,7 +35,7 @@ func (s *Service) NewFeedUpdatesOptions() *FeedUpdatesOptions {
 }
 
 // FeedUpdates - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/latest_updates.{format} endpoint
-func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (FeedUpdatesIO, int, error) {
+func (s *Service) FeedUpdates(options *FeedUpdatesOptions) (FeedUpdatesIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := FeedUpdatesIO{}
 
@@ -71,8 +71,7 @@ func (s *Service) FeedUpdates(c context.Context, options *FeedUpdatesOptions) (F
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for FeedUpdates: %s", err.Error())
 		return mapping, statusCode, err

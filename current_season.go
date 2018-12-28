@@ -34,7 +34,7 @@ func (s *Service) NewCurrentSeasonOptions() *CurrentSeasonOptions {
 }
 
 // CurrentSeason - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/current_season.{format} endpoint
-func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions) (CurrentSeasonIO, int, error) {
+func (s *Service) CurrentSeason(options *CurrentSeasonOptions) (CurrentSeasonIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := CurrentSeasonIO{}
 
@@ -74,8 +74,7 @@ func (s *Service) CurrentSeason(c context.Context, options *CurrentSeasonOptions
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for CurrentSeason: %s", err.Error())
 		return mapping, statusCode, err

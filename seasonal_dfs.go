@@ -43,7 +43,7 @@ func (s *Service) NewSeasonalDfsOptions() *SeasonalDfsOptions {
 }
 
 // SeasonalDfs - hits the https://api.mysportsfeeds.com/v2.0/pull/{sport}/{season}/dfs.{format} endpoint
-func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (DfsIO, int, error) {
+func (s *Service) SeasonalDfs(options *SeasonalDfsOptions) (DfsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := DfsIO{}
 
@@ -111,8 +111,7 @@ func (s *Service) SeasonalDfs(c context.Context, options *SeasonalDfsOptions) (D
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for SeasonalDfs: %s", err.Error())
 		return mapping, statusCode, err

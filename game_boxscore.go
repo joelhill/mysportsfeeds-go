@@ -41,7 +41,7 @@ func (s *Service) NewGameBoxscoreOptions() *GameBoxscoreOptions {
 }
 
 // GameBoxscore - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/boxscore.{format} endoint
-func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) (BoxscoreIO, int, error) {
+func (s *Service) GameBoxscore(options *GameBoxscoreOptions) (BoxscoreIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := BoxscoreIO{}
 
@@ -97,8 +97,7 @@ func (s *Service) GameBoxscore(c context.Context, options *GameBoxscoreOptions) 
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for GameBoxscore: %s", err.Error())
 		return mapping, statusCode, err
