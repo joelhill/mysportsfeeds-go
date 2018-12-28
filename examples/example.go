@@ -1,20 +1,15 @@
 package main
 
 import (
-	"context"
-
 	"github.com/davecgh/go-spew/spew"
-
 	sf "github.com/joelhill/mysportsfeeds-go"
 )
 
 func main() {
-	config := sf.NewConfig("Basic afsdfasdfasdfsadffdfasdfadffas")
-
+	config := sf.NewConfig("Basic changethisheresothatitworks")
 	client := sf.NewService(config)
-	c := context.Background()
 	dailyGameOptions := client.NewDailyGamesOptions()
-	dg, statusCode, dgErr := client.DailyGames(c, dailyGameOptions)
+	dg, statusCode, dgErr := client.DailyGames(dailyGameOptions)
 
 	spew.Dump(dg)
 	spew.Dump(statusCode)
