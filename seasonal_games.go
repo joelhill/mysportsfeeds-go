@@ -41,7 +41,7 @@ func (s *Service) NewSeasonalGamesOptions() *SeasonalGamesOptions {
 }
 
 // SeasonalGames - hits the https://api.mysportsfeeds.com/v2.0/pull/mlb/{season}/games.{format} endoint
-func (s *Service) SeasonalGames(c context.Context, options *SeasonalGamesOptions) (GamesIO, int, error) {
+func (s *Service) SeasonalGames(options *SeasonalGamesOptions) (GamesIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GamesIO{}
 
@@ -101,8 +101,7 @@ func (s *Service) SeasonalGames(c context.Context, options *SeasonalGamesOptions
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for SeasonalGames: %s", err.Error())
 		return mapping, statusCode, err

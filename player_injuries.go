@@ -39,7 +39,7 @@ func (s *Service) NewPlayerInjuriesOptions() *PlayerInjuriesOptions {
 }
 
 // PlayerInjuries - hits the https://api.mysportsfeeds.com/{version/pull/{sport}/{season}/date/{date}/dfs.{format} endpoint
-func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptions) (PlayerInjuriesIO, int, error) {
+func (s *Service) PlayerInjuries(options *PlayerInjuriesOptions) (PlayerInjuriesIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := PlayerInjuriesIO{}
 
@@ -99,8 +99,7 @@ func (s *Service) PlayerInjuries(c context.Context, options *PlayerInjuriesOptio
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for PlayerInjuries: %s", err.Error())
 		return mapping, statusCode, err

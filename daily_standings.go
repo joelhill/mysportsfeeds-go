@@ -38,7 +38,7 @@ func (s *Service) NewDailyStandingsOptions() *DailyStandingsOptions {
 }
 
 // DailyStandings - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/standings.{format} endoint
-func (s *Service) DailyStandings(c context.Context, options *DailyStandingsOptions) (StandingsIO, int, error) {
+func (s *Service) DailyStandings(options *DailyStandingsOptions) (StandingsIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := StandingsIO{}
 
@@ -86,8 +86,7 @@ func (s *Service) DailyStandings(c context.Context, options *DailyStandingsOptio
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for DailyStandings: %s", err.Error())
 		return mapping, statusCode, err

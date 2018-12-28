@@ -38,7 +38,7 @@ func (s *Service) NewGameLineupOptions() *GameLineupOptions {
 }
 
 // GameLineup - hits the https://api.mysportsfeeds.com/{version}/pull/{sport}/{season}/games/{game}/lineup.{format} endoint
-func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (GameLineupIO, int, error) {
+func (s *Service) GameLineup(options *GameLineupOptions) (GameLineupIO, int, error) {
 	errorPayload := make(map[string]interface{})
 	mapping := GameLineupIO{}
 
@@ -82,8 +82,7 @@ func (s *Service) GameLineup(c context.Context, options *GameLineupOptions) (Gam
 	client.WillSaturateOnError(&errorPayload)
 	client.WillSaturate(&mapping)
 
-	ctx := context.Background()
-	statusCode, err := client.Get(ctx)
+	statusCode, err := client.Get(context.Background())
 	if err != nil {
 		s.Logger.Errorf("something went wrong making the get request for GameLineup: %s", err.Error())
 		return mapping, statusCode, err
