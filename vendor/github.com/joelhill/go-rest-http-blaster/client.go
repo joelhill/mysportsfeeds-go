@@ -12,7 +12,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"strings"
+	"regexp"
 	"syscall"
 	"time"
 
@@ -36,6 +36,10 @@ const (
 	keepAlive            = 750 * time.Millisecond // the keep-alive period for an active network connection
 	maxIdleConnsPerHost  = 100                    // the maximum number of idle connections to keep around per host
 	maxIdleConns         = 100                    // the maximum number of idle connections to keep around for ALL hosts
+)
+
+var (
+	pkgJSONRx = regexp.MustCompile(`application/j(son|avascript)(;\s?charset=utf-?8)?`)
 )
 
 // NAME is the name of this library
@@ -274,12 +278,27 @@ func (c *Client) processResponseData(payload []byte, contentType string) error {
 
 		// if there is something that can be unmarshalled into
 		if unmarshalTo != nil {
+
 			// a json content-type could be something like `application/json` or `application/json; charset=utf8`
-			if strings.Split(contentType, ";")[0] == jsonType {
-				decoder := json.NewDecoder(bytes.NewReader(payload))
-				if decodeErr := decoder.Decode(unmarshalTo); decodeErr != nil {
-					return decodeErr
+			if pkgJSONRx.Match([]byte(contentType)) {
+
+				if c.headers["Accept-Encoding"] == "gzip" {
+					var buf2 bytes.Buffer
+					gzipErr := gunzipWrite(&buf2, payload)
+					if gzipErr != nil {
+						return gzipErr
+					}
+					gzipDecoder := json.NewDecoder(bytes.NewReader(buf2.Bytes()))
+					if gzipDecodeErr := gzipDecoder.Decode(unmarshalTo); gzipDecodeErr != nil {
+						return gzipDecodeErr
+					}
+				} else {
+					decoder := json.NewDecoder(bytes.NewReader(payload))
+					if decodeErr := decoder.Decode(unmarshalTo); decodeErr != nil {
+						return decodeErr
+					}
 				}
+
 			} else {
 				// This is not the expected result, so it should be logged as a warning.
 				// Any non-json responses should be accessed via the raw bytes of the client.
@@ -295,6 +314,19 @@ func (c *Client) processResponseData(payload []byte, contentType string) error {
 		}
 	}
 
+	return nil
+}
+
+// Write gunzipped data to a Writer
+func gunzipWrite(w io.Writer, data []byte) error {
+	// Write gzipped data to the client
+	gr, err := gzip.NewReader(bytes.NewBuffer(data))
+	defer gr.Close()
+	data, err = ioutil.ReadAll(gr)
+	if err != nil {
+		return err
+	}
+	w.Write(data)
 	return nil
 }
 
