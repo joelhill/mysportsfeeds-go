@@ -9,12 +9,12 @@
 			"revisionTime": "2018-04-24T14:44:58Z"
 		},
 		{
-			"checksumSHA1": "/RP6aLhIdf1JduhU6qagIBwKVGk=",
+			"checksumSHA1": "vTFE05z25gKM3F8qfIGBqJhfEoM=",
 			"path": "github.com/joelhill/go-rest-http-blaster",
-			"revision": "3aeeb9a5a433381cdad72a080e0ea83329eb8794",
-			"revisionTime": "2018-12-31T07:07:23Z",
-			"version": "v5.2.2",
-			"versionExact": "v5.2.2"
+			"revision": "a894202e89e7787d37c34d85f46f14b621213453",
+			"revisionTime": "2019-01-05T06:20:57Z",
+			"version": "v5.2.3",
+			"versionExact": "v5.2.3"
 		},
 		{
 			"checksumSHA1": "wIcN7tZiF441h08RHAm4NV8cYO4=",

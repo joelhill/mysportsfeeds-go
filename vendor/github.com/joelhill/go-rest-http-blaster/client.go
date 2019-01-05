@@ -29,7 +29,7 @@ const (
 	userAgentHeader      = "User-Agent"
 	contentLengthHeader  = "Content-Length"
 	acceptHeader         = "Accept"
-	requestTimeout       = 8 * time.Second        // the max amount of time for the entire request before failing
+	requestTimeout       = 12 * time.Second       // the max amount of time for the entire request before failing
 	sockTimeout          = 2 * time.Second        // the max amount of time attempting to make the tcp connection
 	tlsTimeout           = 2 * time.Second        // the max amount of time establishing TLS handshake
 	idleTimeout          = 10 * time.Second       // the amount of time to keep idle connections available before closing them
