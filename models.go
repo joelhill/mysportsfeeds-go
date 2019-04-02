@@ -121,7 +121,6 @@ type Score struct {
 	CurrentInning       *string   `json:"currentInning"`
 	CurrentInningHalf   *string   `json:"currentInningHalf"`
 	CurrentIntermission *string   `json:"currentIntermission"`
-	PlayStatus          *string   `json:"playStatus"`
 	AwayScoreTotal      *int      `json:"awayScoreTotal"`
 	AwayHitsTotal       *int      `json:"awayHitsTotal"`
 	AwayErrorsTotal     *int      `json:"awayErrorsTotal"`
