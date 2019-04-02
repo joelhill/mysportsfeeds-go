@@ -16,6 +16,9 @@ const (
 
 	// VersionV2_0 - v2.0
 	VersionV2_0 = "v2.0"
+
+	// VersionV2_1 - v2.1
+	VersionV2_1 = "v2.1"
 )
 
 // SPORT
@@ -67,6 +70,9 @@ const (
 
 	// DateTomorrow -
 	DateTomorrow = "tomorrow"
+
+	// Date2019Season -
+	Date2019Season = "2019-regular"
 )
 
 // STATUS
