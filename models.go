@@ -118,7 +118,7 @@ type Venue struct {
 }
 
 type Score struct {
-	CurrentInning       *string   `json:"currentInning"`
+	CurrentInning       *int      `json:"currentInning"`
 	CurrentInningHalf   *string   `json:"currentInningHalf"`
 	CurrentIntermission *string   `json:"currentIntermission"`
 	AwayScoreTotal      *int      `json:"awayScoreTotal"`
