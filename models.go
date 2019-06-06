@@ -72,9 +72,9 @@ type VenuesIO struct {
 }
 
 type PlayersIO struct {
-	LastUpdatedOn string        `json:"lastUpdatedOn"`
-	Players       *[]Players    `json:"players"`
-	References    *[]References `json:"references"`
+	LastUpdatedOn string      `json:"lastUpdatedOn"`
+	Players       *[]Players  `json:"players"`
+	References    *References `json:"references"`
 }
 
 type StandingsIO struct {
