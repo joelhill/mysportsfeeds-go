@@ -238,15 +238,15 @@ type GameLogGame struct {
 }
 
 type Player struct {
-	ID                  int            `json:"id"`
-	FirstName           string         `json:"firstName"`
-	LastName            string         `json:"lastName"`
-	Position            string         `json:"position"`
-	JerseyNumber        *int           `json:"jerseyNumber"`
-	CurrentTeam         *Team          `json:"currentTeam"`
-	CurrentRosterStatus *string        `json:"currentRosterStatus"`
-	CurrentContractYear *bool          `json:"currentContractYear"`
-	CurrentInjury       *CurrentInjury `json:"currentInjury"`
+	ID                  int                  `json:"id"`
+	FirstName           string               `json:"firstName"`
+	LastName            string               `json:"lastName"`
+	Position            string               `json:"position"`
+	JerseyNumber        *int                 `json:"jerseyNumber"`
+	CurrentTeam         *Team                `json:"currentTeam"`
+	CurrentRosterStatus *string              `json:"currentRosterStatus"`
+	CurrentContractYear *CurrentContractYear `json:"currentContractYear"`
+	CurrentInjury       *CurrentInjury       `json:"currentInjury"`
 }
 
 type Team struct {
@@ -556,4 +556,32 @@ type Rank struct {
 	AppliesTo      *string  `json:"appliesTo"`
 	Rank           *int     `json:"rank"`
 	GamesBack      *float64 `json:"gamesBack"`
+}
+
+type CurrentContractYear struct {
+	SeasonStartYear       int              `json:"seasonStartYear"`
+	BaseSalary            int              `json:"baseSalary"`
+	MinorsSalary          int              `json:"minorsSalary"`
+	SigningBonus          int              `json:"signingBonus"`
+	OtherBonuses          int              `json:"otherBonuses"`
+	CapHit                interface{}      `json:"capHit"`
+	FullNoTradeClause     bool             `json:"fullNoTradeClause"`
+	ModifiedNoTradeClause bool             `json:"modifiedNoTradeClause"`
+	NoMovementClause      bool             `json:"noMovementClause"`
+	OverallContract       *OverallContract `json:"overallContract"`
+}
+
+type OverallContract struct {
+	SigningTeam         *SigningTeam `json:"signingTeam"`
+	SignedOn            interface{}  `json:"signedOn"`
+	TotalYears          int          `json:"totalYears"`
+	TotalSalary         int          `json:"totalSalary"`
+	TotalBonuses        int          `json:"totalBonuses"`
+	ExpiryStatus        interface{}  `json:"expiryStatus"`
+	AnnualAverageSalary int          `json:"annualAverageSalary"`
+}
+
+type SigningTeam struct {
+	ID           int    `json:"id"`
+	Abbreviation string `json:"abbreviation"`
 }
