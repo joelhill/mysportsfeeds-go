@@ -156,11 +156,14 @@ type References struct {
 }
 
 type TeamReference struct {
-	ID           *int       `json:"id"`
-	City         *string    `json:"city"`
-	Name         *string    `json:"name"`
-	Abbreviation *string    `json:"abbreviation"`
-	HomeVenue    *HomeVenue `json:"homeVenue"`
+	ID                   *int          `json:"id"`
+	City                 *string       `json:"city"`
+	Name                 *string       `json:"name"`
+	Abbreviation         *string       `json:"abbreviation"`
+	HomeVenue            *HomeVenue    `json:"homeVenue"`
+	TeamColoursHex       []interface{} `json:"teamColoursHex"`
+	SocialMediaAccounts  []interface{} `json:"socialMediaAccounts"`
+	OfficialLogoImageSrc interface{}   `json:"officialLogoImageSrc"`
 }
 
 type HomeVenue struct {
@@ -169,10 +172,16 @@ type HomeVenue struct {
 }
 
 type VenueReference struct {
-	ID      *int    `json:"id"`
-	Name    *string `json:"name"`
-	City    *string `json:"city"`
-	Country *string `json:"country"`
+	ID                    *int          `json:"id"`
+	Name                  *string       `json:"name"`
+	City                  *string       `json:"city"`
+	Country               *string       `json:"country"`
+	GeoCoordinates        interface{}   `json:"geoCoordinates"`
+	CapacitiesByEventType []interface{} `json:"capacitiesByEventType"`
+	PlayingSurface        interface{}   `json:"playingSurface"`
+	BaseballDimensions    []interface{} `json:"baseballDimensions"`
+	HasRoof               interface{}   `json:"hasRoof"`
+	HasRetractableRoof    interface{}   `json:"hasRetractableRoof"`
 }
 
 type GameReference struct {
