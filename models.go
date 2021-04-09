@@ -250,12 +250,22 @@ type Player struct {
 	ID                  int                  `json:"id"`
 	FirstName           string               `json:"firstName"`
 	LastName            string               `json:"lastName"`
-	Position            string               `json:"position"`
+	PrimaryPosition     string               `json:"primaryPosition"`
+	AlternatePositions  interface{}          `json:"alternatePositions"`
 	JerseyNumber        *int                 `json:"jerseyNumber"`
 	CurrentTeam         *Team                `json:"currentTeam"`
 	CurrentRosterStatus *string              `json:"currentRosterStatus"`
-	CurrentContractYear *CurrentContractYear `json:"currentContractYear"`
 	CurrentInjury       *CurrentInjury       `json:"currentInjury"`
+	Height              *string              `json:"height"`
+	Weight              *string              `json:"weight"`
+	Age                 *int                 `json:"age"`
+	Rookie              *bool                `json:"rookie"`
+	Handedness          interface{}          `json:"handedness"`
+	OfficialImageSrc    *string              `json:"officialImageSrc"`
+	SocialMediaAccounts interface{}          `json:"socialMediaAccounts"`
+	CurrentContractYear *CurrentContractYear `json:"currentContractYear"`
+	Drafted             Drafted              `json:"drafted"`
+	ExternalMappings    interface{}          `json:"externalMappings"`
 }
 
 type Team struct {
