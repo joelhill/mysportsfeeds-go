@@ -265,7 +265,7 @@ type Player struct {
 	SocialMediaAccounts interface{}          `json:"socialMediaAccounts"`
 	CurrentContractYear *CurrentContractYear `json:"currentContractYear"`
 	Drafted             Drafted              `json:"drafted"`
-	ExternalMappings    interface{}          `json:"externalMappings"`
+	ExternalMappings    ExternalMappings     `json:"externalMappings"`
 }
 
 type Team struct {
