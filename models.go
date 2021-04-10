@@ -228,8 +228,8 @@ type Handedness struct {
 }
 
 type ExternalMapping struct {
-	Source *string `json:"source"`
-	ID     *int    `json:"id"`
+	Source *string     `json:"source"`
+	ID     interface{} `json:"id"`
 }
 
 type GameLog struct {
