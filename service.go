@@ -3,7 +3,6 @@ package msf
 import (
 	"os"
 
-	blaster "github.com/joelhill/go-rest-http-blaster"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
 )
@@ -96,12 +95,6 @@ func NewService(config *Config) *Service {
 		}).Error("log level error")
 	}
 	logrus.SetLevel(logLevel)
-
-	blaster.SetDefaults(&blaster.Defaults{
-		ServiceName:    "mysportsfeeds-go",
-		RequireHeaders: false,
-		StatsdRate:     0.0,
-	})
 
 	l := logrus.New()
 	lg := logrus.NewEntry(l)
