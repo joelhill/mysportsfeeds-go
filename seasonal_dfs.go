@@ -1,12 +1,13 @@
 package msf
 
 import (
-	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
-	blaster "github.com/joelhill/go-rest-http-blaster"
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	logrus "github.com/sirupsen/logrus"
 )
 
@@ -44,7 +45,7 @@ func (s *Service) NewSeasonalDfsOptions() *SeasonalDfsOptions {
 
 // SeasonalDfs - hits the https://api.mysportsfeeds.com/v2.0/pull/{sport}/{season}/dfs.{format} endpoint
 func (s *Service) SeasonalDfs(options *SeasonalDfsOptions) (DfsIO, int, error) {
-	errorPayload := make(map[string]interface{})
+
 	mapping := DfsIO{}
 
 	// make sure we have all the required elements to build the full required url string.
@@ -100,30 +101,35 @@ func (s *Service) SeasonalDfs(options *SeasonalDfsOptions) (DfsIO, int, error) {
 	s.Logger.Debug("Seasonal DFS API Call")
 
 	// make you a client
-	client, err := blaster.NewClient(uri)
+	client := retryablehttp.NewClient()
+
+	req, err := retryablehttp.NewRequest(http.MethodGet, uri, nil)
 	if err != nil {
-		s.Logger.Errorf("failed to create a http client: %s", err.Error())
+		s.Logger.Errorf("client: could not create request: %s", err.Error())
+		return mapping, 0, err
+	}
+	req.Header.Add("Authorization", CompressionHeaderGzip)
+	req.Header.Add("Authorization", s.Config.Authorization)
+
+	response, err := client.Do(req)
+	if err != nil {
+		s.Logger.Errorf("client: error making http request: %s", err.Error())
 		return mapping, 0, err
 	}
 
-	client.SetHeader("Accept-Encoding", CompressionHeaderGzip)
-	client.SetHeader("Authorization", s.Config.Authorization)
-	client.WillSaturateOnError(&errorPayload)
-	client.WillSaturate(&mapping)
-
-	statusCode, err := client.Get(context.Background())
-	if err != nil {
-		s.Logger.Errorf("something went wrong making the get request for SeasonalDfs: %s", err.Error())
-		return mapping, statusCode, err
+	if response.StatusCode < 200 || response.StatusCode > 300 {
+		s.Logger.Errorf("client: something went wrong making the get request for SeasonalDfs: %s", err.Error())
+		return mapping, response.StatusCode, err
 	}
 
-	s.Logger.Infof("SeasonalDfs Status Code: %d", statusCode)
+	s.Logger.Infof("SeasonalDfs Status Code: %d", response.StatusCode)
 
-	if client.StatusCodeIsError() {
-		s.Logger.Errorf("SeasonalDfs retuned an unsuccessful status code. Error: %+v", errorPayload)
+	if jErr := json.NewDecoder(response.Body).Decode(&mapping); jErr != nil {
+		s.Logger.Errorf("client: error decoding response for SeasonalDfs: %s", err.Error())
+		return mapping, response.StatusCode, err
 	}
 
-	return mapping, statusCode, nil
+	return mapping, response.StatusCode, nil
 }
 
 func validateSeasonalDfsURI(options *SeasonalDfsOptions) error {
