@@ -1,3 +1,4 @@
+```
 package main
 
 import (
@@ -15,3 +16,4 @@ func main() {
 	spew.Dump(statusCode)
 	spew.Dump(dgErr)
 }
+```
